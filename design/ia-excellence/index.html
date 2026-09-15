@@ -4,31 +4,43 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap">
 <style>
 :root{
-  --ground:#ffffff; --surface:#f2f5f6; --surface-2:#e7edee; --line:#d3dee0; --line-soft:#e4ebec;
-  --text:#14232b; --text-2:#56686f; --text-3:#7d8f96;
-  --primary:#0f4c5c; --accent:#146f80; --accent-live:#1d8fa3; --brass:#8f6416;
-  --ok:#2f7a57; --warn:#a4660f; --crit:#a5352f;
-  --hero-bg:#0f4c5c; --hero-2:#0b3b47; --hero-text:#eef6f7; --hero-dim:#9cc3cb; --hero-line:#2a6675;
-  --note:#6b3fa0; --note-bg:#f4efff; --note-line:#d9c9f5;
-  --shadow:0 1px 2px rgba(16,40,48,.07), 0 6px 18px -8px rgba(16,40,48,.16);
+  /* Brand: navy #000050 · blue #1061FF · cyan #4BF5FF · white · orange #FF593C · green #00E66E */
+  --navy:#000050; --blue:#1061FF; --cyan:#4BF5FF; --orange:#FF593C; --green:#00E66E;
+
+  --ground:#ffffff; --surface:#f3f7ff; --surface-2:#e9f1ff; --line:#dee9ff; --line-soft:#edf3ff;
+  --text:#101540; --text-2:#4d5680; --text-3:#6e79a3;
+  --primary:#1061ff; --accent:#0a3a99; --accent-live:#1061ff;
+  --active:#1061ff;                       /* in progress */
+  --ok:#00e66e;   --ok-text:#00854f;      /* green reads only as a fill on white */
+  --crit:#ff593c; --crit-text:#c7452f; --crit-deep:#a32e1b;
+  --hero-bg:#000050; --hero-2:#000033; --hero-text:#ffffff; --hero-dim:#9fb0e8;
+  --hero-line:#1c2470; --hero-accent:#4bf5ff; --hero-mute:#3a4590;
+  --note:#0a3a99; --note-bg:#eef4ff; --note-line:#b7d0ff;
+  --shadow:0 1px 2px rgba(16,21,64,.06), 0 6px 18px -8px rgba(16,21,64,.18);
 }
 @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
-  --ground:#0b1417; --surface:#111e23; --surface-2:#17292f; --line:#25383f; --line-soft:#1c2f35;
-  --text:#e2ecee; --text-2:#94a9b0; --text-3:#7a9099;
-  --primary:#63bccc; --accent:#71c7d6; --accent-live:#8ad8e6; --brass:#d3a044;
-  --ok:#57b78a; --warn:#d69f4c; --crit:#e07d76;
-  --hero-bg:#0a1b21; --hero-2:#071418; --hero-text:#dcebee; --hero-dim:#85a8b1; --hero-line:#1e3a43;
-  --note:#c3a4f0; --note-bg:#1d1730; --note-line:#3b2c5c;
-  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px -10px rgba(0,0,0,.6);
+  --ground:#00002b; --surface:#000050; --surface-2:#0a1560; --line:#1c2470; --line-soft:#151c5c;
+  --text:#eaf0ff; --text-2:#a8b6e8; --text-3:#8f9eda;
+  --primary:#4bf5ff; --accent:#8af8ff; --accent-live:#4bf5ff;
+  --active:#6c9bff;
+  --ok:#00e66e;   --ok-text:#00e66e;      /* on navy the brand green is fully legible */
+  --crit:#ff593c; --crit-text:#ff7a62; --crit-deep:#c7452f;
+  --hero-bg:#001472; --hero-2:#000038; --hero-text:#ffffff; --hero-dim:#9fb0e8;
+  --hero-line:#1c2470; --hero-accent:#4bf5ff; --hero-mute:#2a3480;
+  --note:#4bf5ff; --note-bg:#04103a; --note-line:#1c2470;
+  --shadow:0 1px 2px rgba(0,0,20,.5), 0 6px 20px -10px rgba(0,0,30,.7);
 }}
 :root[data-theme="dark"]{
-  --ground:#0b1417; --surface:#111e23; --surface-2:#17292f; --line:#25383f; --line-soft:#1c2f35;
-  --text:#e2ecee; --text-2:#94a9b0; --text-3:#7a9099;
-  --primary:#63bccc; --accent:#71c7d6; --accent-live:#8ad8e6; --brass:#d3a044;
-  --ok:#57b78a; --warn:#d69f4c; --crit:#e07d76;
-  --hero-bg:#0a1b21; --hero-2:#071418; --hero-text:#dcebee; --hero-dim:#85a8b1; --hero-line:#1e3a43;
-  --note:#c3a4f0; --note-bg:#1d1730; --note-line:#3b2c5c;
-  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 20px -10px rgba(0,0,0,.6);
+  --ground:#00002b; --surface:#000050; --surface-2:#0a1560; --line:#1c2470; --line-soft:#151c5c;
+  --text:#eaf0ff; --text-2:#a8b6e8; --text-3:#8f9eda;
+  --primary:#4bf5ff; --accent:#8af8ff; --accent-live:#4bf5ff;
+  --active:#6c9bff;
+  --ok:#00e66e; --ok-text:#00e66e;
+  --crit:#ff593c; --crit-text:#ff7a62; --crit-deep:#c7452f;
+  --hero-bg:#001472; --hero-2:#000038; --hero-text:#ffffff; --hero-dim:#9fb0e8;
+  --hero-line:#1c2470; --hero-accent:#4bf5ff; --hero-mute:#2a3480;
+  --note:#4bf5ff; --note-bg:#04103a; --note-line:#1c2470;
+  --shadow:0 1px 2px rgba(0,0,20,.5), 0 6px 20px -10px rgba(0,0,30,.7);
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--ground);color:var(--text);
@@ -64,7 +76,7 @@ button:focus-visible,.toggle:focus-within,a:focus-visible,[tabindex]:focus-visib
 /* ---------- site header ---------- */
 .sitehead{background:var(--ground);border-bottom:1px solid var(--line)}
 .sitehead .wrap{display:flex;align-items:center;gap:14px;padding-block:14px}
-.sitelogo{width:44px;height:44px;border-radius:8px;background:var(--hero-bg);color:#eef6f7;display:grid;place-items:center;
+.sitelogo{width:44px;height:44px;border-radius:8px;background:var(--navy);color:var(--cyan);display:grid;place-items:center;
   font-family:Archivo,sans-serif;font-weight:700;font-size:17px;letter-spacing:.02em;flex:none}
 .sitename{font-size:19px;font-weight:700}
 .sitemeta{font-size:12px;color:var(--text-3)}
@@ -76,7 +88,7 @@ button:focus-visible,.toggle:focus-within,a:focus-visible,[tabindex]:focus-visib
 
 /* ---------- sections ---------- */
 section{padding-block:44px}
-.sec-strong{background:linear-gradient(180deg,var(--hero-bg),var(--hero-2));color:var(--hero-text)}
+.sec-strong{background:linear-gradient(160deg,var(--hero-bg) 0%,var(--hero-2) 78%);color:var(--hero-text)}
 .sec-neutral{background:var(--surface)}
 .sec-soft{background:var(--surface-2)}
 .sechead{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:20px}
@@ -89,17 +101,17 @@ section{padding-block:44px}
 .hero{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:40px;align-items:start}
 .hero h1{font-size:clamp(30px,4.4vw,46px);font-weight:700;line-height:1.06;color:var(--hero-text)}
 .hero .lede{color:var(--hero-dim);font-size:17px;margin:14px 0 0;max-width:46ch}
-.hero .eyebrow{color:var(--hero-dim)}
+.hero .eyebrow{color:var(--hero-accent)}
 .heroacts{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
 .btn{font-family:Archivo,sans-serif;font-weight:600;font-size:14px;text-decoration:none;border-radius:7px;
   padding:11px 18px;display:inline-flex;align-items:center;gap:8px}
-.btn-1{background:var(--hero-text);color:var(--hero-bg)}
+.btn-1{background:var(--hero-accent);color:var(--navy)}
 .btn-2{border:1px solid var(--hero-line);color:var(--hero-text)}
 .btn:hover{transform:translateY(-1px)}
 .btn{transition:transform .14s ease}
 
 .plancard{background:rgba(255,255,255,.05);border:1px solid var(--hero-line);border-radius:12px;padding:20px}
-.plancard .eyebrow{color:var(--hero-dim)}
+.plancard .eyebrow{color:var(--hero-accent)}
 .planbig{font-family:Archivo,sans-serif;font-size:38px;font-weight:700;color:var(--hero-text);line-height:1;margin:10px 0 2px}
 .planbig small{font-size:14px;font-weight:500;color:var(--hero-dim);margin-left:6px;font-family:"Source Sans 3",sans-serif}
 .planbar{display:flex;height:9px;border-radius:5px;overflow:hidden;margin:16px 0 12px;background:var(--hero-line)}
@@ -122,7 +134,7 @@ section{padding-block:44px}
 .qlink p{margin:3px 0 0;font-size:13.5px;color:var(--text-2);line-height:1.45}
 .pill{font-family:Archivo,sans-serif;font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
   border-radius:4px;padding:2px 6px;border:1px solid var(--line);color:var(--text-3)}
-.pill-sys{background:var(--accent);color:var(--ground);border-color:transparent}
+.pill-sys{background:var(--blue);color:#fff;border-color:transparent}
 
 /* ---------- paths ---------- */
 .path{background:var(--ground);border:1px solid var(--line);border-radius:12px;padding:22px;box-shadow:var(--shadow);
@@ -204,13 +216,13 @@ section{padding-block:44px}
 /* ---------- culture ---------- */
 .story{background:var(--ground);border:1px solid var(--line);border-radius:10px;overflow:hidden;
   text-decoration:none;display:flex;flex-direction:column;box-shadow:var(--shadow)}
-.storyimg{aspect-ratio:16/9;background:var(--hero-bg);display:grid;place-items:center;color:var(--hero-dim);
+.storyimg{aspect-ratio:16/9;background:var(--navy);display:grid;place-items:center;color:var(--hero-dim);
   font-family:Archivo,sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;position:relative}
 .storyimg::after{content:"";position:absolute;inset:0;
-  background:repeating-linear-gradient(135deg,transparent 0 11px,rgba(255,255,255,.035) 11px 22px)}
+  background:repeating-linear-gradient(135deg,transparent 0 11px,rgba(75,245,255,.07) 11px 22px)}
 .story .body{padding:15px 16px;display:flex;flex-direction:column;gap:5px;flex:1}
 .story .kicker{font-family:Archivo,sans-serif;font-size:10px;font-weight:600;letter-spacing:.11em;
-  text-transform:uppercase;color:var(--brass)}
+  text-transform:uppercase;color:var(--primary)}
 .story h3{font-size:15.5px;font-weight:600;line-height:1.3}
 .story p{margin:0;font-size:13.5px;color:var(--text-2)}
 .story:hover h3{color:var(--accent)}
@@ -222,7 +234,7 @@ section{padding-block:44px}
   text-transform:uppercase;color:var(--text-3);flex:none}
 .celebrate ul{list-style:none;margin:0;padding:0;display:flex;gap:20px;flex-wrap:wrap;flex:1}
 .celebrate li{font-size:13.5px;display:flex;align-items:baseline;gap:8px}
-.celebrate .d{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--brass)}
+.celebrate .d{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--primary)}
 
 /* ---------- build notes ---------- */
 .wp{display:none;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--note);
@@ -255,10 +267,11 @@ pre{background:var(--surface);border:1px solid var(--line);border-radius:10px;pa
 .phase{border-left:3px solid var(--accent-live);padding:2px 0 2px 18px;margin:20px 0}
 .phase .when{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--text-3)}
 .phase h3{margin-top:2px}
-.callout{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--warn);
+.callout{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--orange);
   border-radius:0 10px 10px 0;padding:16px 18px;margin:20px 0}
 .callout h4{font-family:Archivo,sans-serif;font-size:13px;font-weight:700;margin-bottom:5px}
 .callout p{margin:0;font-size:14px}
+.sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;vertical-align:baseline}
 .footer{border-top:1px solid var(--line);padding-block:30px;color:var(--text-3);font-size:13px;background:var(--surface)}
 
 @media(max-width:900px){
@@ -336,14 +349,14 @@ pre{background:var(--surface);border:1px solid var(--line);border-radius:10px;pa
         <div class="eyebrow">Annual plan progress</div>
         <div class="planbig">24<small>engagements approved by the Audit Committee</small></div>
         <div class="planbar" role="img" aria-label="11 complete, 7 in fieldwork, 6 not started">
-          <i style="width:46%;background:var(--ok)"></i>
-          <i style="width:29%;background:var(--warn)"></i>
-          <i style="width:25%;background:var(--hero-dim);opacity:.45"></i>
+          <i style="width:46%;background:var(--green)"></i>
+          <i style="width:29%;background:var(--cyan)"></i>
+          <i style="width:25%;background:var(--hero-mute)"></i>
         </div>
         <div class="planlegend">
-          <div><span class="dot" style="background:var(--ok)"></span>Reported &amp; closed <b>11</b></div>
-          <div><span class="dot" style="background:var(--warn)"></span>Fieldwork in progress <b>7</b></div>
-          <div><span class="dot" style="background:var(--hero-dim);opacity:.45"></span>Scheduled, not started <b>6</b></div>
+          <div><span class="dot" style="background:var(--green)"></span>Reported &amp; closed <b>11</b></div>
+          <div><span class="dot" style="background:var(--cyan)"></span>Fieldwork in progress <b>7</b></div>
+          <div><span class="dot" style="background:var(--hero-mute)"></span>Scheduled, not started <b>6</b></div>
         </div>
         <div class="stamp mono">Source: Engagements list · refreshed 15 Sep 2026 · example data</div>
       </div>
@@ -458,9 +471,9 @@ pre{background:var(--surface);border:1px solid var(--line);border-radius:10px;pa
         <p class="sub">Agreed management actions past their due date, grouped by how long they have been open. Owners are notified automatically at 30 and 90 days.</p>
         <div class="bars">
           <div class="bar"><div class="top"><span>0–30 days</span><b>18</b></div><div class="track"><i style="width:60%;background:var(--ok)"></i></div></div>
-          <div class="bar"><div class="top"><span>31–90 days</span><b>9</b></div><div class="track"><i style="width:30%;background:var(--warn)"></i></div></div>
+          <div class="bar"><div class="top"><span>31–90 days</span><b>9</b></div><div class="track"><i style="width:30%;background:var(--active)"></i></div></div>
           <div class="bar"><div class="top"><span>91–180 days</span><b>4</b></div><div class="track"><i style="width:13%;background:var(--crit)"></i></div></div>
-          <div class="bar"><div class="top"><span>Over 180 days</span><b>2</b></div><div class="track"><i style="width:7%;background:var(--crit)"></i></div></div>
+          <div class="bar"><div class="top"><span>Over 180 days</span><b class="mono" style="color:var(--crit-text)">2</b></div><div class="track"><i style="width:7%;background:var(--crit-deep)"></i></div></div>
         </div>
         <div class="ageaxis"><span>33 open · 6 closed this month</span><span>example data</span></div>
       </div>
@@ -520,7 +533,7 @@ pre{background:var(--surface);border:1px solid var(--line);border-radius:10px;pa
         <div class="railcard">
           <h4>Your CPE</h4>
           <div class="cpe"><b>26</b><span>of 40 hours · FY2026</span></div>
-          <div class="track"><i style="width:65%;background:var(--brass)"></i></div>
+          <div class="track"><i style="width:65%;background:var(--active)"></i></div>
           <p style="margin:10px 0 0;font-size:13px;color:var(--text-2)">14 hours to go before 31 December. Three sessions are open for registration.</p>
         </div>
         <div class="railcard">
@@ -581,22 +594,69 @@ pre{background:var(--surface);border:1px solid var(--line);border-radius:10px;pa
 </table></div>
 
 <h3>The theme</h3>
-<p>Generate at <code>aka.ms/themedesigner</code> from the primary below, then apply with <code>Add-SPOTheme</code> or paste into Brand Center. Primary and body text are the two inputs that matter.</p>
-<pre>Primary      #0F4C5C   deep teal — links, buttons, section accents
-Accent       #1D8FA3   hover and interactive states
-Body text    #14232B   near-black, slightly cool
-Page bg      #FFFFFF   with #F2F5F6 for Neutral sections
+<p>Your six brand colours do different jobs, and the split is decided by contrast rather than taste. Measured against white and against the navy:</p>
 
-Status colours — use only in list formatting, never as theme colours:
-  Closed / on track    #2F7A57
-  Due soon / open      #A4660F
-  Overdue / high       #A5352F
-  Recognition / CPE    #8F6416</pre>
+<div class="tablewrap"><table>
+  <thead><tr><th>Colour</th><th>On white</th><th>On navy</th><th>Job on the page</th></tr></thead>
+  <tbody>
+    <tr><td><span class="sw" style="background:#000050"></span>Navy #000050</td><td>18.8:1</td><td>—</td><td>Hero and strong sections, the site mark, headings.</td></tr>
+    <tr><td><span class="sw" style="background:#1061FF"></span>Blue #1061FF</td><td>5.0:1</td><td>3.7:1</td><td><strong>The workhorse.</strong> Links, buttons, theme primary, "in progress".</td></tr>
+    <tr><td><span class="sw" style="background:#4BF5FF"></span>Cyan #4BF5FF</td><td>1.3:1</td><td>14.2:1</td><td>Navy only — eyebrows, hero button, the site mark, dark-mode links.</td></tr>
+    <tr><td><span class="sw" style="background:#00E66E"></span>Green #00E66E</td><td>1.7:1</td><td>11.2:1</td><td>Fills and chips on white; readable as text only on navy.</td></tr>
+    <tr><td><span class="sw" style="background:#FF593C"></span>Orange #FF593C</td><td>3.1:1</td><td>6.1:1</td><td>Overdue and high-rated issues. Fills pass; text needs a darker shade.</td></tr>
+    <tr><td><span class="sw" style="background:#FFFFFF;border:1px solid var(--line)"></span>White</td><td>—</td><td>18.8:1</td><td>Page ground; body text on navy.</td></tr>
+  </tbody>
+</table></div>
+
+<div class="callout">
+  <h4>The one rule that keeps the palette honest</h4>
+  <p><strong>Cyan and green live on navy. Blue and navy live on white.</strong> Cyan text on a white page sits at 1.3:1 — effectively invisible, and it is the mistake every brand with an electric accent makes on its intranet. Use cyan and green on white as <em>fills</em> only: progress bars, status chips, icon backgrounds, the hatch on an image. Where a word must be green or orange on white, use the darkened shades below.</p>
+</div>
+
+<h3>Paste this into Change the look</h3>
+<p>Fluent tint and shade ramp generated from <code>#1061FF</code>, with navy-biased neutrals. Save it as <code>ia-theme.json</code> and load it with <code>Add-SPOTheme</code>, or paste the values into Brand Center.</p>
+<pre>{
+  "themePrimary":        "#1061FF",   "themeLighterAlt":  "#F5F9FF",
+  "themeLighter":        "#D9E6FF",   "themeLight":       "#B7D0FF",
+  "themeTertiary":       "#70A0FF",   "themeSecondary":   "#2D74FF",
+  "themeDarkAlt":        "#0F59EA",   "themeDark":        "#0D4DC9",
+  "themeDarker":         "#0A3A99",
+
+  "neutralLighterAlt":   "#FBFBFC",   "neutralLighter":   "#F7F7F8",
+  "neutralLight":        "#EDEDF1",   "neutralQuaternaryAlt": "#DFDFE5",
+  "neutralQuaternary":   "#D6D7DF",   "neutralTertiaryAlt":   "#BCBDCA",
+  "neutralTertiary":     "#9B9DAF",   "neutralSecondary":     "#747790",
+  "neutralPrimaryAlt":   "#515474",   "neutralPrimary":       "#363A5F",
+  "neutralDark":         "#2A2F55",   "black":                "#1E234B",
+  "white":               "#FFFFFF"
+}</pre>
+<p>PowerShell, once per tenant:</p>
+<pre>$theme = Get-Content .\ia-theme.json -Raw | ConvertFrom-Json -AsHashtable
+Add-SPOTheme -Name "Internal Audit" -Palette $theme -IsInverted $false
+# then: site › Change the look › Theme › "Internal Audit"</pre>
+
+<h3>Colours the theme cannot carry</h3>
+<p>SharePoint's theme has one accent. Green, orange and cyan go into <strong>list formatting JSON</strong>, where you set them per value — which is where they belong anyway, because they encode status rather than brand.</p>
+<pre>Fills (bars, chips, icon tiles) — brand values, exact:
+  Closed / on track      #00E66E
+  In progress            #1061FF
+  Overdue                #FF593C
+  Not started            #3A4590   (muted navy)
+
+Text on white — darkened, because the brand values fail WCAG:
+  Green text             #00854F   (4.6:1)
+  Orange text            #C7452F   (6.7:1)
+  Over-180-day escalation #A32E1B  (8.0:1)</pre>
+
+<div class="callout">
+  <h4>Your palette has no amber, and audit work usually wants one</h4>
+  <p>Classic RAG needs a middle state between "fine" and "overdue". With green, orange and no amber, I used <strong>blue for "in progress / watch"</strong> — defensible, fully on-brand, and it reads as neutral-active rather than alarming. If your reporting to the Audit Committee uses a true three-colour RAG, the alternative is one derived amber (<code>#FFA61E</code>, a hue-rotation of your orange) added as a status-only colour. That is a brand decision, not a design one — worth asking whoever owns the brand guidelines before you standardise it across dashboards.</p>
+</div>
 
 <h3>Sequence</h3>
 
 <div class="phase"><div class="when">Week 1 — half a day</div><h3>Theme and skeleton</h3>
-<p>Apply the theme. Rebuild the home page sections in the order above, with placeholder text. Fix the top navigation to the seven items in the header — your current navigation is the library structure, which is not how anyone thinks about their work.</p></div>
+<p>Apply the theme JSON above. Rebuild the home page sections in the order above, with placeholder text. Fix the top navigation to the seven items in the header — your current navigation is the library structure, which is not how anyone thinks about their work.</p></div>
 
 <div class="phase"><div class="when">Week 1–2 — two days</div><h3>Icons, links and copy</h3>
 <p>Commission or draw the six Quick Links icons as one set. Write the descriptions — one sentence each, saying what the person gets, not what the thing is called. Verify every link opens for someone who is not you.</p></div>
