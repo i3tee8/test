@@ -1,0 +1,544 @@
+<title>Audit Hub Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root{
+  --navy:#000050; --blue:#1061FF; --cyan:#4BF5FF; --orange:#FF593C; --green:#00E66E;
+  --ground:#fff; --surface:#f3f7ff; --surface-2:#e9f1ff; --line:#dee9ff; --line-soft:#edf3ff;
+  --text:#101540; --text-2:#4d5680; --text-3:#6e79a3;
+  --primary:#1061ff; --ok-text:#00854f; --crit-text:#c7452f;
+  --chip:#0a3a99; --chip-bg:#eef4ff; --chip-line:#b7d0ff;
+  --shadow:0 1px 2px rgba(16,21,64,.06),0 6px 18px -8px rgba(16,21,64,.18);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#00002b; --surface:#000050; --surface-2:#0a1560; --line:#1c2470; --line-soft:#151c5c;
+  --text:#eaf0ff; --text-2:#a8b6e8; --text-3:#8f9eda;
+  --primary:#4bf5ff; --ok-text:#00e66e; --crit-text:#ff7a62;
+  --chip:#4bf5ff; --chip-bg:#04103a; --chip-line:#1c2470;
+  --shadow:0 1px 2px rgba(0,0,20,.5),0 6px 20px -10px rgba(0,0,30,.7);
+}}
+:root[data-theme="dark"]{
+  --ground:#00002b; --surface:#000050; --surface-2:#0a1560; --line:#1c2470; --line-soft:#151c5c;
+  --text:#eaf0ff; --text-2:#a8b6e8; --text-3:#8f9eda;
+  --primary:#4bf5ff; --ok-text:#00e66e; --crit-text:#ff7a62;
+  --chip:#4bf5ff; --chip-bg:#04103a; --chip-line:#1c2470;
+  --shadow:0 1px 2px rgba(0,0,20,.5),0 6px 20px -10px rgba(0,0,30,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--text);font-size:15px;line-height:1.55;
+  font-family:"Segoe UI","Source Sans 3",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-family:Archivo,"Segoe UI",sans-serif;text-wrap:balance;letter-spacing:-.012em}
+a{color:inherit;text-decoration:none}
+.mono{font-family:"IBM Plex Mono",monospace;font-variant-numeric:tabular-nums}
+.w{max-width:1204px;margin:0 auto;padding-inline:20px}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+
+/* ---- chrome ---- */
+.suite{background:#1a1a1a;color:#e8e8e8;font-size:12px;padding:8px 0}
+.suite .w{display:flex;gap:13px;align-items:center;flex-wrap:wrap}
+.suite b{font-weight:600}
+.suite .tag{margin-left:auto;border:1px solid #444;border-radius:99px;padding:2px 9px;color:#bdbdbd;font-size:11px}
+.tbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--ground);border-bottom:1px solid var(--line)}
+.tbar .w{display:flex;align-items:center;gap:10px;padding-block:10px;flex-wrap:wrap}
+.tbar h1{font-size:15px;font-weight:700}
+.tbar .sub{font-size:12.5px;color:var(--text-3)}
+.tg{margin-left:auto;display:inline-flex;gap:7px;align-items:center;font-size:12.5px;color:var(--text-2);
+  border:1px solid var(--line);border-radius:8px;padding:6px 11px;cursor:pointer;font-weight:600;background:var(--ground)}
+.tg input{accent-color:var(--primary);margin:0}
+
+.shead{border-bottom:1px solid var(--line);background:var(--ground)}
+.shead .w{display:flex;align-items:center;gap:13px;padding-block:13px}
+.smark{width:42px;height:42px;border-radius:7px;background:var(--navy);color:var(--cyan);display:grid;
+  place-items:center;font-family:Archivo,sans-serif;font-weight:700;font-size:16px;flex:none}
+.snav{border-bottom:1px solid var(--line);overflow-x:auto}
+.snav .w{display:flex;gap:2px}
+.snav a{font-size:13.5px;font-weight:600;color:var(--text-2);padding:11px 13px;white-space:nowrap;
+  border-bottom:2px solid transparent}
+.snav a.on{color:var(--text);border-bottom-color:var(--primary)}
+
+/* ---- web part chip ---- */
+.wp{display:flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:10.5px;
+  color:var(--chip);background:var(--chip-bg);border:1px solid var(--chip-line);border-radius:5px;
+  padding:4px 9px;margin-bottom:9px;line-height:1.45;flex-wrap:wrap}
+.wp b{font-weight:500}
+.wp .lay{color:var(--text-3)}
+body.nolab .wp{display:none}
+
+/* ---- sections ---- */
+sec,section{display:block;padding-block:40px}
+.bgN{background:var(--surface)}
+.bgS{background:var(--surface-2)}
+.sh{margin-bottom:18px;display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.sh h2{font-size:22px;font-weight:700}
+.sh p{margin:5px 0 0;color:var(--text-2);font-size:14.5px;max-width:64ch}
+.more{font-size:13px;font-weight:600;color:var(--primary);white-space:nowrap}
+
+/* ---- BANNER web part ---- */
+.banner{background:var(--navy);border-radius:4px;overflow:hidden;position:relative;
+  display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);min-height:264px}
+.banner .txt{padding:40px;display:flex;flex-direction:column;justify-content:center;color:#fff;position:relative;z-index:2}
+.banner .eb{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);
+  font-family:Archivo,sans-serif}
+.banner h2{font-size:clamp(25px,3.4vw,38px);font-weight:700;color:#fff;margin:12px 0 0;line-height:1.1;max-width:18ch}
+.banner p{color:#b9c6ef;font-size:15.5px;margin:12px 0 0;max-width:48ch}
+.banner .acts{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.bt1,.bt2{font-size:13.5px;font-weight:700;border-radius:4px;padding:10px 18px;font-family:Archivo,sans-serif;
+  display:inline-flex;align-items:center;gap:7px}
+.bt1{background:var(--cyan);color:var(--navy)}
+.bt2{border:1.5px solid rgba(255,255,255,.4);color:#fff}
+.banner .ph{background:linear-gradient(140deg,#0a1560,#000050);position:relative;display:grid;place-items:center;
+  color:#5d6bb5;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-family:Archivo,sans-serif}
+.banner .ph::after{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(135deg,transparent 0 13px,rgba(75,245,255,.055) 13px 26px)}
+
+/* ---- EDITORIAL CARD ---- */
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.ed{border-radius:4px;padding:26px;display:flex;flex-direction:column;min-height:252px;color:#fff;position:relative;overflow:hidden}
+.ed.navy{background:var(--navy)}
+.ed.blue{background:var(--blue)}
+.ed.split{background:var(--surface);color:var(--text);border:1px solid var(--line);padding:0;
+  display:grid;grid-template-columns:118px minmax(0,1fr);align-items:stretch}
+.ed.split .im{background:linear-gradient(150deg,#0a1560,#000050);display:grid;place-items:center;color:var(--cyan);
+  font-family:"IBM Plex Mono",monospace;font-size:11px}
+.ed.split .bd{padding:24px}
+.ed .ic{width:36px;height:36px;border-radius:5px;display:grid;place-items:center;margin-bottom:14px;
+  font-family:Archivo,sans-serif;font-weight:700;font-size:12px;
+  background:rgba(255,255,255,.14);color:var(--cyan);border:1px solid rgba(75,245,255,.3)}
+.ed.blue .ic{background:rgba(255,255,255,.18);color:#fff;border-color:rgba(255,255,255,.35)}
+.ed h3{font-size:19px;font-weight:700;line-height:1.2}
+.ed p{font-size:14px;margin:9px 0 0;color:rgba(255,255,255,.76);line-height:1.5}
+.ed.split p{color:var(--text-2)}
+.ed .cta{margin-top:auto;padding-top:20px;font-size:13.5px;font-weight:700;color:var(--cyan);
+  font-family:Archivo,sans-serif;display:inline-flex;gap:7px;align-items:center}
+.ed.blue .cta{color:#fff}
+.ed.split .cta{color:var(--primary)}
+.ed:hover .cta{gap:11px}
+.ed .cta{transition:gap .18s}
+.ed.split h3{font-size:17px}
+
+/* ---- QUICK LINKS tiles ---- */
+.ql{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.qi{background:var(--ground);border:1px solid var(--line);border-radius:4px;padding:16px 14px;text-align:center;
+  box-shadow:var(--shadow);transition:border-color .16s,transform .16s}
+.qi:hover{border-color:var(--primary);transform:translateY(-2px)}
+.qi .ic{width:40px;height:40px;border-radius:7px;margin:0 auto 10px;display:grid;place-items:center;
+  background:var(--navy);color:var(--cyan);font-family:"IBM Plex Mono",monospace;font-size:11px;font-weight:500}
+.qi .nm{font-size:13px;font-weight:600;line-height:1.3;font-family:Archivo,sans-serif}
+
+/* ---- POWER BI frame ---- */
+.pbi{border:1px solid var(--line);border-radius:4px;background:var(--ground);box-shadow:var(--shadow);overflow:hidden}
+.pbi .hd{display:flex;align-items:center;gap:10px;padding:13px 18px;border-bottom:1px solid var(--line);
+  background:var(--surface);font-size:13px}
+.pbi .hd .dot{width:9px;height:9px;border-radius:50%;background:var(--green)}
+.pbi .hd b{font-weight:600}
+.pbi .hd .rt{margin-left:auto;font-size:11.5px;color:var(--text-3)}
+.pbi .bd{padding:24px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.kpi .k{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);
+  font-family:Archivo,sans-serif}
+.kpi .v{font-family:Archivo,sans-serif;font-size:30px;font-weight:700;line-height:1;margin:7px 0 6px;letter-spacing:-.02em}
+.kpi .d{font-size:12px;color:var(--text-2)}
+.trk{height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden;margin-top:9px}
+.trk i{display:block;height:100%;border-radius:3px}
+
+/* ---- HIGHLIGHTED CONTENT / lists ---- */
+.card{background:var(--ground);border:1px solid var(--line);border-radius:4px;padding:20px;box-shadow:var(--shadow)}
+.card h3{font-size:16px;font-weight:700}
+.card .sb{font-size:13px;color:var(--text-2);margin:4px 0 14px}
+.doc{display:flex;gap:12px;align-items:baseline;padding:10px 0;border-top:1px solid var(--line-soft);font-size:14px}
+.doc:first-of-type{border-top:0}
+.doc .rf{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--text-3);width:58px;flex:none}
+.doc .tt{min-width:0}
+.doc .dt{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--text-3);flex:none}
+.doc:hover .tt{color:var(--primary)}
+
+/* ---- CALL TO ACTION ---- */
+.c2a{background:linear-gradient(115deg,var(--navy),#0a1560);border-radius:4px;padding:34px 38px;
+  display:flex;align-items:center;gap:28px;flex-wrap:wrap;color:#fff;position:relative;overflow:hidden}
+.c2a::after{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(135deg,transparent 0 15px,rgba(75,245,255,.045) 15px 30px)}
+.c2a .tx{position:relative;z-index:1;flex:1 1 380px}
+.c2a h3{font-size:24px;font-weight:700}
+.c2a p{margin:9px 0 0;color:#b9c6ef;font-size:15px;max-width:58ch}
+.c2a .bt1{position:relative;z-index:1}
+
+/* ---- COUNTDOWN / EVENTS / rail ---- */
+.rail{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:22px;align-items:start}
+.cd{background:var(--navy);color:#fff;border-radius:4px;padding:20px;text-align:center}
+.cd .lb{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--cyan);
+  font-family:Archivo,sans-serif}
+.cdn{display:flex;justify-content:center;gap:10px;margin:14px 0 10px}
+.cdn div{background:rgba(255,255,255,.09);border-radius:5px;padding:9px 0;min-width:52px}
+.cdn b{display:block;font-family:Archivo,sans-serif;font-size:23px;font-weight:700;line-height:1}
+.cdn span{font-size:9.5px;color:#a9b7e6;letter-spacing:.07em;text-transform:uppercase}
+.cd p{margin:0;font-size:12.5px;color:#b9c6ef}
+.ev{display:flex;gap:11px;padding:9px 0;border-top:1px solid var(--line-soft);align-items:center}
+.ev:first-of-type{border-top:0}
+.evd{width:38px;flex:none;text-align:center;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.evd b{display:block;background:var(--surface-2);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--text-2);padding:1px 0;font-family:Archivo,sans-serif}
+.evd i{display:block;font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:15px;padding:2px 0}
+.ev .n{font-size:13.5px;line-height:1.3}
+.ev .n small{display:block;color:var(--text-3);font-size:12px}
+.pp{display:flex;gap:11px;align-items:center;padding:9px 0;border-top:1px solid var(--line-soft)}
+.pp:first-of-type{border-top:0}
+.pp .av{width:32px;height:32px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:11px;
+  font-weight:700;background:var(--surface-2);color:var(--primary);font-family:Archivo,sans-serif}
+.pp .tx{display:flex;flex-direction:column;min-width:0}
+.pp .n{font-size:13.5px;font-weight:600;line-height:1.25}
+.pp .r{font-size:12px;color:var(--text-3)}
+.agent{background:linear-gradient(140deg,var(--blue),var(--navy));border-radius:4px;padding:20px;color:#fff}
+.agent .lb{font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--cyan);
+  font-family:Archivo,sans-serif}
+.agent h4{font-size:16px;font-weight:700;margin:8px 0 6px;font-family:Archivo,sans-serif}
+.agent p{margin:0;font-size:13px;color:rgba(255,255,255,.8)}
+.agent .go{display:inline-flex;gap:7px;margin-top:14px;font-size:13px;font-weight:700;color:var(--cyan);
+  font-family:Archivo,sans-serif}
+
+/* ---- MARKDOWN table ---- */
+.mdw{overflow-x:auto;border:1px solid var(--line);border-radius:4px}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:13.5px}
+th{font-family:Archivo,sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--text-3);text-align:left;padding:11px 14px;background:var(--surface);border-bottom:1px solid var(--line)}
+td{padding:11px 14px;border-bottom:1px solid var(--line-soft);color:var(--text-2);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td:first-child{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--text);white-space:nowrap}
+td a{color:var(--primary)}
+
+/* ---- IMAGE GALLERY brick ---- */
+.gal{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.gc{border-radius:4px;overflow:hidden;border:1px solid var(--line);background:var(--ground);box-shadow:var(--shadow)}
+.gc .im{aspect-ratio:4/3;background:linear-gradient(150deg,#0a1560,#000050);display:grid;place-items:center;
+  color:#5d6bb5;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;position:relative;font-family:Archivo,sans-serif}
+.gc .im::after{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(135deg,transparent 0 11px,rgba(75,245,255,.06) 11px 22px)}
+.gc .cp{padding:11px 13px;font-size:13px;font-weight:600;line-height:1.3;font-family:Archivo,sans-serif}
+.gc .cp small{display:block;font-weight:400;color:var(--text-3);font-size:11.5px;font-family:"Source Sans 3",sans-serif}
+
+/* ---- NEWS ---- */
+.nw{display:flex;gap:16px;padding:14px 0;border-top:1px solid var(--line-soft);align-items:flex-start}
+.nw:first-of-type{border-top:0}
+.nw .th{width:92px;aspect-ratio:16/10;border-radius:4px;flex:none;
+  background:linear-gradient(150deg,#0a1560,#000050)}
+.nw .tx{display:flex;flex-direction:column;min-width:0}
+.nw .dt{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--text-3)}
+.nw strong{display:block;font-size:14.5px;font-weight:600;margin:3px 0 3px;font-family:Archivo,sans-serif}
+.nw span{font-size:13px;color:var(--text-2)}
+.nw:hover strong{color:var(--primary)}
+
+/* ---- FORM ---- */
+.form{border:1px solid var(--line);border-radius:4px;background:var(--ground);padding:22px;box-shadow:var(--shadow)}
+.fr{display:grid;gap:5px;margin-bottom:14px}
+.fr label{font-size:12.5px;font-weight:600;color:var(--text-2)}
+.fr .in{border:1px solid var(--line);border-radius:4px;padding:9px 11px;font-size:13.5px;color:var(--text-3);
+  background:var(--surface)}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fbtn{background:var(--primary);color:#fff;border-radius:4px;padding:10px 20px;font-size:13.5px;font-weight:700;
+  display:inline-block;font-family:Archivo,sans-serif}
+
+/* ---- inventory ---- */
+.inv h2{font-size:24px;font-weight:700}
+.inv .lead{color:var(--text-2);max-width:64ch;margin:10px 0 22px}
+.pill{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:11px;padding:2px 7px;border-radius:4px;
+  border:1px solid var(--line);color:var(--text-2)}
+.pill.need{border-color:var(--orange);color:var(--crit-text)}
+.pill.ok{border-color:var(--green);color:var(--ok-text)}
+.foot{border-top:1px solid var(--line);padding-block:26px;color:var(--text-3);font-size:12.5px;background:var(--surface)}
+
+@media(max-width:1000px){
+  .ql{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pbi .bd{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .gal{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .rail,.banner{grid-template-columns:minmax(0,1fr)}
+  .banner .ph{min-height:120px}
+}
+@media(max-width:680px){
+  .g3,.g2,.fg{grid-template-columns:minmax(0,1fr)}
+  .ql{grid-template-columns:repeat(2,minmax(0,1fr))}
+  section{padding-block:30px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="suite"><div class="w"><b>SharePoint</b><span>Internal Audit Excellence</span>
+  <span class="tag">Design concept — not a live site</span></div></div>
+
+<div class="tbar"><div class="w">
+  <div><h1>Audit Hub Blueprint</h1><div class="sub">Every block below is a web part from your Toolbox. Labels show which one and how it is set.</div></div>
+  <label class="tg"><input type="checkbox" id="lab" checked> Web part labels</label>
+</div></div>
+
+<div class="shead"><div class="w">
+  <div class="smark">IA</div>
+  <div><div style="font-size:19px;font-weight:700;font-family:Archivo,sans-serif">Internal Audit Excellence</div>
+  <div style="font-size:12px;color:var(--text-3)">Group Internal Audit · 68 members</div></div>
+</div></div>
+<nav class="snav"><div class="w">
+  <a href="#" class="on">Home</a><a href="#">Methodology &amp; Manuals</a><a href="#">TeamMate+</a>
+  <a href="#">Requests</a><a href="#">Learning &amp; CPE</a><a href="#">Reports</a><a href="#">Team</a>
+</div></nav>
+
+<!-- 1 BANNER -->
+<section>
+  <div class="w">
+    <div class="wp"><b>Banner</b><span class="lay">· layout: Overlap · background: image with dark overlay 70% · brand navy</span></div>
+    <div class="banner">
+      <div class="txt">
+        <span class="eb">FY2026 · Group Internal Audit</span>
+        <h2>Everything an audit needs, one click from here.</h2>
+        <p>Methodology, templates, TeamMate+ and live issue status — owned and kept current by named people.</p>
+        <div class="acts"><a class="bt1" href="#">Open TeamMate+ →</a><a class="bt2" href="#">Audit Manual v4.2</a></div>
+      </div>
+      <div class="ph">team photograph</div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 QUICK LINKS -->
+<section class="bgN">
+  <div class="w">
+    <div class="wp"><b>Quick links</b><span class="lay">· layout: Tiles · 6 links · custom 40×40 PNG icons, not stock Fluent icons</span></div>
+    <div class="sh"><div><h2>Go to</h2><p>The six destinations that account for most visits. Nothing else competes for this row.</p></div>
+      <a class="more" href="#">All systems &amp; forms →</a></div>
+    <div class="ql">
+      <a class="qi" href="#"><div class="ic">TM+</div><div class="nm">TeamMate+</div></a>
+      <a class="qi" href="#"><div class="ic">MAN</div><div class="nm">Audit Manual</div></a>
+      <a class="qi" href="#"><div class="ic">TPL</div><div class="nm">Templates</div></a>
+      <a class="qi" href="#"><div class="ic">A&amp;I</div><div class="nm">Analytics</div></a>
+      <a class="qi" href="#"><div class="ic">CxO</div><div class="nm">CxO Reporting</div></a>
+      <a class="qi" href="#"><div class="ic">CAL</div><div class="nm">Leave Plan</div></a>
+    </div>
+  </div>
+</section>
+
+<!-- 3 EDITORIAL CARDS -->
+<section>
+  <div class="w">
+    <div class="wp"><b>Editorial card ×3</b><span class="lay">· 3-column section · layout: Color block · icon on · CTA button on · align: top-left</span></div>
+    <div class="sh"><div><h2>Start here</h2><p>Three ways in, depending on why you opened the page. The third is for the rest of the business — it is why this site gets linked to from outside the department.</p></div></div>
+    <div class="g3">
+      <div class="ed navy"><div class="ic">01</div><h3>New to the team</h3>
+        <p>Access, methodology and the people who unblock you — laid out for your first 30 days.</p>
+        <span class="cta">Start onboarding →</span></div>
+      <div class="ed blue"><div class="ic">02</div><h3>Running an engagement</h3>
+        <p>Planning memo, RACM, sampling sheets, findings log, report shell and the QA checklist, in order.</p>
+        <span class="cta">Open the toolkit →</span></div>
+      <div class="ed navy"><div class="ic">03</div><h3>Being audited</h3>
+        <p>For business partners outside Internal Audit. What to expect, what we ask for, how issues close.</p>
+        <span class="cta">What to expect →</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 POWER BI -->
+<section class="bgN">
+  <div class="w">
+    <div class="wp"><b>Power BI</b><span class="lay">· full-width section · report page pinned · filtered to viewer via row-level security</span></div>
+    <div class="sh"><div><h2>Assurance dashboard</h2><p>Plan delivery, issue ageing and CPE, straight from the Power BI workspace. This is the piece that earns a weekly visit rather than a monthly one.</p></div>
+      <a class="more" href="#">Open full report →</a></div>
+    <div class="pbi">
+      <div class="hd"><span class="dot"></span><b>IA — FY2026 Assurance</b><span class="rt mono">refreshed 15 Sep 2026 · 03:12</span></div>
+      <div class="bd">
+        <div class="kpi"><div class="k">Plan delivery</div><div class="v">46<span style="font-size:17px">%</span></div>
+          <div class="d">11 of 24 engagements reported</div><div class="trk"><i style="width:46%;background:var(--green)"></i></div></div>
+        <div class="kpi"><div class="k">In fieldwork</div><div class="v">7</div>
+          <div class="d">3 past planned end date</div><div class="trk"><i style="width:29%;background:var(--blue)"></i></div></div>
+        <div class="kpi"><div class="k">Open issues</div><div class="v">33</div>
+          <div class="d">6 over 90 days</div><div class="trk"><i style="width:82%;background:var(--orange)"></i></div></div>
+        <div class="kpi"><div class="k">Avg. days to close</div><div class="v">47</div>
+          <div class="d">target 45 · down from 61</div><div class="trk"><i style="width:60%;background:var(--blue)"></i></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 HIGHLIGHTED CONTENT + vertical section -->
+<section>
+  <div class="w">
+    <div class="wp"><b>Vertical section</b><span class="lay">· main column + right rail · rail holds Countdown timer, Events, People, Agent link</span></div>
+    <div class="rail">
+      <div>
+        <div class="wp"><b>Highlighted content</b><span class="lay">· source: IA Document Library · filter: Managed property ContentType = Methodology · sort: most recent · layout: List</span></div>
+        <div class="card">
+          <h3>Methodology, latest first</h3>
+          <p class="sb">Populates itself. Publish a document to the library with the right content type and it appears here — no one edits this page again.</p>
+          <a class="doc" href="#"><span class="rf">MAN 6</span><span class="tt">Sampling thresholds, revised</span><span class="dt">12 SEP</span></a>
+          <a class="doc" href="#"><span class="rf">TPL 02</span><span class="tt">Risk &amp; control matrix v3</span><span class="dt">12 SEP</span></a>
+          <a class="doc" href="#"><span class="rf">MAN 9</span><span class="tt">Issue closure evidence standard</span><span class="dt">03 SEP</span></a>
+          <a class="doc" href="#"><span class="rf">A&amp;I</span><span class="tt">Analytics service catalogue</span><span class="dt">28 AUG</span></a>
+          <a class="doc" href="#"><span class="rf">TPL 06</span><span class="tt">QA review checklist</span><span class="dt">19 AUG</span></a>
+        </div>
+
+        <div style="margin-top:22px">
+          <div class="wp"><b>Markdown</b><span class="lay">· renders tables, headings, lists and links · no HTML, no CSS — plain structure only</span></div>
+          <div class="card" style="padding:0;overflow:hidden">
+            <div style="padding:20px 20px 14px"><h3>Where each stage lives</h3>
+              <p class="sb">The lifecycle index. One table, edited in Markdown, no web part rebuild when a reference changes.</p></div>
+            <div class="mdw"><table>
+              <thead><tr><th>Stage</th><th>Required papers</th><th>In TeamMate+</th><th>Accountable</th></tr></thead>
+              <tbody>
+                <tr><td>1 · Plan</td><td><a href="#">Risk universe</a>, <a href="#">plan deck</a></td><td>Risk Assessment</td><td>Head of IA</td></tr>
+                <tr><td>2 · Announce</td><td><a href="#">WP 1</a>, <a href="#">WP 2 RACM</a></td><td>Projects › Planning</td><td>Engagement Manager</td></tr>
+                <tr><td>3 · Fieldwork</td><td><a href="#">WP 3</a>, <a href="#">evidence index</a></td><td>Workpapers</td><td>Engagement Lead</td></tr>
+                <tr><td>4 · Report</td><td><a href="#">WP 4</a>, <a href="#">WP 5</a>, <a href="#">QA checklist</a></td><td>Issues → Report</td><td>Manager + QA</td></tr>
+                <tr><td>5 · Follow-up</td><td><a href="#">MAN 9</a>, <a href="#">follow-up sheet</a></td><td>Issue Tracking</td><td>Issue owner</td></tr>
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+      </div>
+
+      <aside style="display:grid;gap:16px">
+        <div>
+          <div class="wp"><b>Countdown timer</b></div>
+          <div class="cd"><span class="lb">Q3 follow-up cut-off</span>
+            <div class="cdn"><div><b>15</b><span>days</span></div><div><b>06</b><span>hrs</span></div><div><b>42</b><span>min</span></div></div>
+            <p>All closure evidence due in TeamMate+</p></div>
+        </div>
+        <div>
+          <div class="wp"><b>Events</b><span class="lay">· filtered</span></div>
+          <div class="card">
+            <div class="ev"><span class="evd"><b>Sep</b><i>16</i></span><span class="n">CAAT clinic: revenue testing<small>10:00–11:30 · Teams</small></span></div>
+            <div class="ev"><span class="evd"><b>Sep</b><i>23</i></span><span class="n">Saudi National Day<small>Public holiday</small></span></div>
+            <div class="ev"><span class="evd"><b>Oct</b><i>07</i></span><span class="n">Audit Committee pre-read<small>Managers only</small></span></div>
+          </div>
+        </div>
+        <div>
+          <div class="wp"><b>People</b><span class="lay">· 3 profiles</span></div>
+          <div class="card">
+            <div class="pp"><span class="av">MQ</span><span class="tx"><span class="n">Methodology queries</span><span class="r">IA Excellence team</span></span></div>
+            <div class="pp"><span class="av">TA</span><span class="tx"><span class="n">TeamMate+ access</span><span class="r">Systems administrator</span></span></div>
+            <div class="pp"><span class="av">AI</span><span class="tx"><span class="n">Analytics requests</span><span class="r">Audit Analytics &amp; Innovation</span></span></div>
+          </div>
+        </div>
+        <div>
+          <div class="wp"><b>Agent link</b><span class="lay">· requires Copilot</span></div>
+          <div class="agent"><span class="lb">Ask Internal Audit</span>
+            <h4>Methodology assistant</h4>
+            <p>Grounded on the manual and templates library. Answers cite the chapter they came from.</p>
+            <span class="go">Start a conversation →</span></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- 6 CALL TO ACTION -->
+<section class="bgS">
+  <div class="w">
+    <div class="wp"><b>Call to action</b><span class="lay">· background image + dark overlay · single button</span></div>
+    <div class="c2a">
+      <div class="tx"><h3>Your department is being audited?</h3>
+        <p>What we will ask for, how long it takes, how findings get agreed, and what closes an issue. Written in plain language for people who do not work in audit.</p></div>
+      <a class="bt1" href="#">Read what to expect →</a>
+    </div>
+  </div>
+</section>
+
+<!-- 7 FORMS + NEWS -->
+<section>
+  <div class="w">
+    <div class="g2">
+      <div>
+        <div class="wp"><b>Microsoft Forms</b><span class="lay">· embedded inline, not a link out · collects responses to a list</span></div>
+        <div class="sh"><div><h2>Request analytics support</h2><p>Submitted from this page in under a minute. Today this is a link that loses people.</p></div></div>
+        <div class="form">
+          <div class="fg">
+            <div class="fr"><label>Engagement reference</label><div class="in mono">IA-26-0__</div></div>
+            <div class="fr"><label>Support needed</label><div class="in">Data extraction ▾</div></div>
+          </div>
+          <div class="fr"><label>What are you trying to test?</label><div class="in" style="min-height:64px">Describe the control or assertion…</div></div>
+          <div class="fg">
+            <div class="fr"><label>Date needed</label><div class="in mono">dd / mm / yyyy</div></div>
+            <div class="fr"><label>Source system</label><div class="in">Select ▾</div></div>
+          </div>
+          <span class="fbtn">Submit request</span>
+        </div>
+      </div>
+      <div>
+        <div class="wp"><b>News</b><span class="lay">· layout: List · filtered to News category = Methodology</span></div>
+        <div class="sh"><div><h2>What changed</h2><p>Methodology and process only. Culture news sits further down, in its own web part.</p></div></div>
+        <div class="card">
+          <a class="nw" href="#"><span class="th"></span><span class="tx"><span class="dt">12 SEP</span><strong>Audit Manual v4.2 published</strong><span>Sampling thresholds revised in ch. 6; RACM template replaced.</span></span></a>
+          <a class="nw" href="#"><span class="th"></span><span class="tx"><span class="dt">03 SEP</span><strong>New issue-closure evidence rule</strong><span>Screenshots alone no longer close a high-rated issue.</span></span></a>
+          <a class="nw" href="#"><span class="th"></span><span class="tx"><span class="dt">19 AUG</span><strong>QAIP external assessment scheduled</strong><span>Five-yearly review begins November.</span></span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 IMAGE GALLERY -->
+<section class="bgN">
+  <div class="w">
+    <div class="wp"><b>Image gallery</b><span class="lay">· layout: Brick · 4 across · captions on</span></div>
+    <div class="sh"><div><h2>People &amp; culture</h2><p>Still celebrated, moved below the working content so the page earns a daily visit.</p></div>
+      <a class="more" href="#">All stories →</a></div>
+    <div class="gal">
+      <a class="gc" href="#"><div class="im">photo</div><div class="cp">September SPOC awards<small>Recognition</small></div></a>
+      <a class="gc" href="#"><div class="im">photo</div><div class="cp">Guest Auditor programme<small>Awareness month</small></div></a>
+      <a class="gc" href="#"><div class="im">photo</div><div class="cp">Paperless fieldwork<small>ESG</small></div></a>
+      <a class="gc" href="#"><div class="im">photo</div><div class="cp">IA team, Jeddah<small>Offsite</small></div></a>
+    </div>
+  </div>
+</section>
+
+<!-- 9 SPLIT CARDS -->
+<section>
+  <div class="w">
+    <div class="wp"><b>Editorial card ×2</b><span class="lay">· layout: Split · image left, text right</span></div>
+    <div class="g2">
+      <a class="ed split" href="#"><div class="im">MENTOR</div><div class="bd">
+        <h3>Mentorship programme</h3><p>Match with a mentor against the skills catalogue. Tracker app is the interim tool while the full system is built.</p>
+        <span class="cta">Explore skills catalogue →</span></div></a>
+      <a class="ed split" href="#"><div class="im">CPE</div><div class="bd">
+        <h3>Continuing Professional Education</h3><p>Log hours, browse sessions, track against the 40-hour annual requirement.</p>
+        <span class="cta">Open the CPE programme →</span></div></a>
+    </div>
+  </div>
+</section>
+
+<div class="foot"><div class="w">
+  <b>Site activity</b> web part sits here · Design concept. Figures are placeholder examples, not real audit data.
+</div></div>
+
+<!-- INVENTORY -->
+<section class="inv bgS">
+  <div class="w">
+    <h2>What this uses from your Toolbox</h2>
+    <p class="lead">Eighteen web parts, all present in the panel you sent. Three need something you do not control — everything else you can build yourself, today.</p>
+    <div class="mdw"><table>
+      <thead><tr><th>Web part</th><th>Where</th><th>Setting that matters</th><th>Ready?</th></tr></thead>
+      <tbody>
+        <tr><td>Banner</td><td>Hero</td><td>Overlap layout; dark overlay ~70% so the headline stays legible over a photograph</td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>Quick links</td><td>Go to</td><td>Tiles layout. Commission the six icons as one set — biggest visual gain available</td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>Editorial card</td><td>Start here ×3, Split ×2</td><td>Color block for the three paths; Split for mentorship and CPE. CTA button on</td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>Power BI</td><td>Assurance dashboard</td><td>Pin one report page, not the whole report. Row-level security for personal views</td><td><span class="pill need">licence</span></td></tr>
+        <tr><td>Highlighted content</td><td>Methodology list</td><td>Query by content type, not by folder. This is what stops the page going stale</td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>Markdown</td><td>Lifecycle index</td><td>Tables and links render. HTML does not — it prints as text. Plain structure only</td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>Vertical section</td><td>Right rail</td><td>Give it a different background tone from the sections beside it</td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>Countdown timer</td><td>Rail</td><td>Point at the Q3 cut-off, then move it each quarter. A dead countdown is worse than none</td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>Events</td><td>Rail</td><td>Filter by category so holidays and birthdays do not crowd out deadlines</td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>People</td><td>Rail</td><td>Real named owners. "IA Excellence team" as a mailbox is where questions go to die</td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>Agent link</td><td>Rail</td><td>Ground the agent on the manual library only, so answers cite a chapter</td><td><span class="pill need">Copilot</span></td></tr>
+        <tr><td>Call to action</td><td>Being audited</td><td>One button, one message. Two buttons halves the click-through</td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>Microsoft Forms</td><td>Analytics request</td><td>Embed it inline. Every link-out to a form loses people</td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>News</td><td>What changed</td><td>A separate News category for methodology, so it never mixes with culture posts</td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>Image gallery</td><td>People &amp; culture</td><td>Brick layout. Crop every photo to the same ratio before upload</td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>List</td><td>Issues, Engagements</td><td>Format the view in JSON — shadows, radius, gradients and flex are all supported there</td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>Divider · Spacer</td><td>Between sections</td><td>The only rhythm control you get. Use them deliberately, not to patch gaps</td><td><span class="pill ok">yes</span></td></tr>
+        <tr><td>Site activity</td><td>Footer</td><td>Shows the page is alive. Also tells you whether anyone is actually visiting</td><td><span class="pill ok">yes</span></td></tr>
+      </tbody>
+    </table></div>
+
+    <h2 style="margin-top:40px;font-size:19px">Deliberately not used</h2>
+    <p class="lead" style="margin-bottom:0"><b>Hero</b> — Banner and Editorial card do the same job with real layout control. <b>Code snippet</b> — displays code, it does not run it; no use here. <b>Embed</b> — only if you iframe the Power BI report instead of using its own web part, and it needs the site collection allow-list. <b>Quick chart</b> — Power BI covers it. <b>Weather, World clock, Maps, Kindle</b> — filler that makes an intranet look unowned. <b>Organization chart, Planner, Conversations</b> — good, but they belong on the Team page, not the home page.</p>
+  </div>
+</section>
+
+<script>
+document.getElementById('lab').addEventListener('change',e=>{
+  document.body.classList.toggle('nolab',!e.target.checked);
+});
+</script>
