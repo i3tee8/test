@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Embed diagnostic</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&display=swap">
+<style>
+  body{margin:0;background:#000050;color:#fff;font:15px/1.5 "Segoe UI",system-ui,sans-serif;padding:22px}
+  h1{font-size:17px;margin:0 0 4px;font-family:Archivo,"Segoe UI",sans-serif;font-weight:700}
+  .sub{color:#9fb0e8;font-size:13px;margin-bottom:18px}
+  .row{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid #1c2470}
+  .row:first-of-type{border-top:0}
+  .s{width:74px;flex:none;font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+  .pass{color:#00E66E} .fail{color:#FF593C} .wait{color:#9fb0e8}
+  .t{font-size:13.5px}
+  .t small{display:block;color:#9fb0e8;font-size:12px}
+  .box{margin-top:16px;padding:12px 14px;border:1px solid #1c2470;border-radius:6px;
+       font:12px/1.5 ui-monospace,monospace;color:#9fb0e8}
+  b.cy{color:#4BF5FF}
+  /* proves a CSS feature the inline sanitiser would never allow */
+  .grad{background:linear-gradient(90deg,#4BF5FF,#1061FF);-webkit-background-clip:text;
+        background-clip:text;color:transparent;font-weight:700}
+</style>
+</head><body>
+
+<h1>SharePoint embed diagnostic</h1>
+<div class="sub">Upload to a library, then iframe this file. Each row answers itself.</div>
+
+<div class="row"><span class="s pass">pass</span>
+  <span class="t">CSS renders — <span class="grad">gradient-clipped text</span>
+  <small>If this line is coloured, full stylesheets work in a hosted file.</small></span></div>
+
+<div class="row"><span class="s wait" id="fs">check</span>
+  <span class="t" id="ft">Google Fonts (Archivo)
+  <small id="fd">Testing whether fonts.googleapis.com loads from inside the frame…</small></span></div>
+
+<div class="row"><span class="s fail" id="js">fail</span>
+  <span class="t">JavaScript
+  <small id="jd">If this still reads “fail”, scripts are blocked — the page is static HTML only.</small></span></div>
+
+<div class="row"><span class="s wait" id="ls">check</span>
+  <span class="t">Link behaviour
+  <small>Links need <b class="cy">target="_top"</b> or they open inside this frame. <a href="https://www.microsoft.com" target="_top" style="color:#4BF5FF">Test link</a></small></span></div>
+
+<div class="box" id="dims">Frame size: measuring… · set the iframe height to whatever this reports.</div>
+
+<script>
+  var j=document.getElementById('js');
+  j.textContent='pass'; j.className='s pass';
+  document.getElementById('jd').textContent='Scripts run. Interactive components are possible.';
+
+  // webfont detection: compare Archivo metrics against a fallback
+  document.fonts.ready.then(function(){
+    var ok = document.fonts.check('700 16px Archivo');
+    var s=document.getElementById('fs'), d=document.getElementById('fd');
+    s.textContent = ok ? 'pass' : 'fail';
+    s.className = 's ' + (ok ? 'pass' : 'fail');
+    d.textContent = ok ? 'External fonts load. Brand typography works here.'
+                       : 'Blocked. Use a system font stack instead.';
+  });
+
+  var l=document.getElementById('ls'); l.textContent='info'; l.className='s wait';
+
+  function dims(){
+    document.getElementById('dims').innerHTML =
+      'Frame size: <b class="cy">' + window.innerWidth + ' × ' + window.innerHeight + '</b> px'
+      + ' · content height <b class="cy">' + document.body.scrollHeight + '</b> px'
+      + ' · set the iframe height to the content height.';
+  }
+  dims(); window.addEventListener('resize', dims);
+</script>
+</body></html>
