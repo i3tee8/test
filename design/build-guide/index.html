@@ -147,7 +147,7 @@ const PHASES=[
    <li>If your admin has loaded a company theme, pick it and stop here.</li>
    <li>If not, choose <strong>Blue</strong> and select <strong>Customize</strong> to push the primary as close to your blue as the picker allows.</li>
   </ol>
-  <div class="note"><b>To get exact brand colour</b> your admin runs one PowerShell command with the theme JSON, or adds it in Brand Center. Ask them — it takes them two minutes and it is the difference between "close to brand" and "on brand". Everything below works either way.</div>`},
+  <div class="note tip"><b>Theme loaded by your admin?</b> Adding it to the tenant is not the same as applying it here. Change the look → Theme → pick it → <strong>Save</strong>. Then check a link on the page has turned brand blue.</div><div class="note"><b>Once the theme is on, “Strong” section background becomes your bright blue</b> (#1061FF), not navy — section emphasis is drawn from <span class="key">themePrimary</span>. A full band in that blue is loud: use <strong>Strong</strong> on one section at most, and keep the rest on None, Neutral or Soft. Navy comes from background images, not from section tones.</div>`},
 
  {t:"Make the six Quick Links icons",wp:"preparation",tm:"1–2 hrs",b:`
   <p>The single biggest visual upgrade available to you. Stock Fluent icons are what make an intranet look like everyone else's.</p>
@@ -173,8 +173,8 @@ const PHASES=[
   <p>Add a <strong>one-column</strong> section at the top. Background: <strong>None</strong> — the Banner brings its own.</p>
   <div class="set">
    <div class="r"><span class="k">Layout</span><span class="v">Overlap</span></div>
-   <div class="r"><span class="k">Background</span><span class="v">A team photograph, or a flat navy image if you have none</span></div>
-   <div class="r"><span class="k">Overlay</span><span class="v">Dark, opacity around 70% — the headline must stay readable</span></div>
+   <div class="r"><span class="k">Background</span><span class="v">A team photograph, or <span class="key">banner-navy-hatch.png</span> from Site Assets</span></div>
+   <div class="r"><span class="k">Overlay</span><span class="v">Dark ~70% over a photograph. Over the supplied navy image, turn the overlay <strong>off</strong> — it only muddies an already-dark image</span></div>
    <div class="r"><span class="k">Buttons</span><span class="v">Two: TeamMate+ and the Audit Manual</span></div>
   </div>
   <div class="cp"><span class="cpl">Headline</span><div class="bx">Everything an audit needs, one click from here.</div><button data-c>Copy</button></div>
@@ -201,7 +201,7 @@ Leave Plan</div><button data-c>Copy</button></div>
   <p>Add a <strong>three-column</strong> section. Background: <strong>None</strong>. Put one Editorial card in each column.</p>
   <div class="set">
    <div class="r"><span class="k">Layout (all three)</span><span class="v">Color block</span></div>
-   <div class="r"><span class="k">Colour</span><span class="v">Card 1 and 3 darkest available; card 2 your primary blue</span></div>
+   <div class="r"><span class="k">Colour</span><span class="v">Cards 1 and 3 the darkest option offered; card 2 your primary blue. If Color block has no dark navy, switch that card to an <strong>image</strong> background and use <span class="key">card-navy.png</span></span></div>
    <div class="r"><span class="k">Alignment</span><span class="v">Top left</span></div>
    <div class="r"><span class="k">Icon</span><span class="v">On</span></div>
    <div class="r"><span class="k">Call to action</span><span class="v">On — one button each</span></div>
