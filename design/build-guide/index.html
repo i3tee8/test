@@ -1,0 +1,398 @@
+<title>Audit Hub Build Steps</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root{
+  --navy:#000050; --blue:#1061FF; --cyan:#4BF5FF; --orange:#FF593C; --green:#00E66E;
+  --ground:#fff; --surface:#f4f7ff; --surface-2:#e9f1ff; --line:#dde8ff; --line-soft:#edf3ff;
+  --text:#101540; --text-2:#4d5680; --text-3:#6e79a3;
+  --primary:#1061ff; --done:#00854f; --warnt:#a4550c;
+  --code-bg:#f4f7ff; --code-line:#dde8ff;
+  --shadow:0 1px 2px rgba(16,21,64,.05),0 4px 14px -8px rgba(16,21,64,.16);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#00002b; --surface:#050d38; --surface-2:#0a1560; --line:#1c2470; --line-soft:#151c5c;
+  --text:#eaf0ff; --text-2:#a8b6e8; --text-3:#8f9eda;
+  --primary:#4bf5ff; --done:#00e66e; --warnt:#e0a95c;
+  --code-bg:#050d38; --code-line:#1c2470;
+  --shadow:0 1px 2px rgba(0,0,20,.5),0 4px 16px -10px rgba(0,0,30,.7);
+}}
+:root[data-theme="dark"]{
+  --ground:#00002b; --surface:#050d38; --surface-2:#0a1560; --line:#1c2470; --line-soft:#151c5c;
+  --text:#eaf0ff; --text-2:#a8b6e8; --text-3:#8f9eda;
+  --primary:#4bf5ff; --done:#00e66e; --warnt:#e0a95c;
+  --code-bg:#050d38; --code-line:#1c2470;
+  --shadow:0 1px 2px rgba(0,0,20,.5),0 4px 16px -10px rgba(0,0,30,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--text);font-size:15px;line-height:1.6;
+  font-family:"Source Sans 3","Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{margin:0;font-family:Archivo,"Segoe UI",sans-serif;text-wrap:balance;letter-spacing:-.014em}
+a{color:var(--primary)}
+.mono{font-family:"IBM Plex Mono",monospace}
+.w{max-width:860px;margin:0 auto;padding-inline:20px}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+
+/* header */
+.top{background:var(--navy);color:#fff;padding-block:30px 26px}
+.top .eb{font-family:Archivo,sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--cyan)}
+.top h1{font-size:clamp(25px,4vw,34px);font-weight:700;margin:11px 0 0;color:#fff}
+.top p{color:#b9c6ef;margin:11px 0 0;font-size:15.5px;max-width:58ch}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--ground);
+  border-bottom:1px solid var(--line)}
+.bar .w{display:flex;align-items:center;gap:14px;padding-block:11px;flex-wrap:wrap}
+.pg{flex:1 1 180px;min-width:140px}
+.pgt{display:flex;justify-content:space-between;font-size:12px;color:var(--text-2);margin-bottom:5px}
+.pgt b{font-family:"IBM Plex Mono",monospace;color:var(--text)}
+.pgb{height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.pgb i{display:block;height:100%;background:var(--green);border-radius:3px;transition:width .3s}
+.rst{font-family:Archivo,sans-serif;font-size:12px;font-weight:600;border:1px solid var(--line);
+  background:var(--ground);color:var(--text-2);border-radius:7px;padding:6px 12px;cursor:pointer}
+.rst:hover{border-color:var(--primary);color:var(--primary)}
+
+/* phases */
+.ph{margin-top:44px;padding-top:22px;border-top:2px solid var(--line)}
+.ph:first-of-type{margin-top:34px}
+.ph .n{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--primary)}
+.ph h2{font-size:23px;font-weight:700;margin-top:4px}
+.ph p{color:var(--text-2);margin:7px 0 0;font-size:14.5px}
+
+/* step */
+.st{margin-top:20px;border:1px solid var(--line);border-radius:10px;background:var(--ground);
+  box-shadow:var(--shadow);overflow:hidden}
+.st.done{background:var(--surface);border-color:var(--line-soft)}
+.st.done .sh h3{text-decoration:line-through;color:var(--text-3)}
+.sh{display:flex;gap:13px;align-items:flex-start;padding:17px 19px;cursor:pointer}
+.sh input{margin:2px 0 0;width:17px;height:17px;accent-color:var(--green);flex:none;cursor:pointer}
+.sh .num{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--text-3);flex:none;padding-top:2px}
+.sh .tt{min-width:0;flex:1}
+.sh h3{font-size:16.5px;font-weight:700;line-height:1.3}
+.sh .wpn{display:inline-flex;align-items:center;gap:6px;margin-top:6px;font-family:"IBM Plex Mono",monospace;
+  font-size:11px;color:var(--primary);background:var(--surface-2);border-radius:5px;padding:3px 8px}
+.sh .tm{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--text-3);flex:none;padding-top:3px}
+.sb{padding:0 19px 19px 19px;border-top:1px solid var(--line-soft);padding-top:16px}
+.st.done .sb{display:none}
+
+.sb p{margin:0 0 11px;color:var(--text-2);font-size:14.5px}
+.sb p:last-child{margin-bottom:0}
+.sb strong{color:var(--text);font-weight:600}
+ol.cl,ul.cl{margin:0 0 12px;padding-left:19px;color:var(--text-2);font-size:14.5px}
+ol.cl li,ul.cl li{margin:6px 0}
+.key{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:12px;background:var(--surface-2);
+  border:1px solid var(--line);border-radius:4px;padding:1px 6px;color:var(--text);white-space:nowrap}
+
+.set{border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:12px 0}
+.set .r{display:flex;gap:14px;padding:9px 13px;border-top:1px solid var(--line-soft);font-size:13.5px}
+.set .r:first-child{border-top:0}
+.set .r .k{flex:0 0 40%;color:var(--text-3);font-family:Archivo,sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:.03em;text-transform:uppercase;padding-top:2px}
+.set .r .v{color:var(--text);min-width:0}
+
+.cp{position:relative;margin:12px 0}
+.cp .bx{background:var(--code-bg);border:1px solid var(--code-line);border-radius:8px;padding:13px 15px;
+  font-size:13.5px;color:var(--text);white-space:pre-wrap;word-break:break-word}
+.cp .bx.m{font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.5;overflow-x:auto;white-space:pre}
+.cp button{position:absolute;top:8px;right:8px;font-family:Archivo,sans-serif;font-size:11px;font-weight:600;
+  border:1px solid var(--line);background:var(--ground);color:var(--text-2);border-radius:6px;
+  padding:4px 9px;cursor:pointer}
+.cp button:hover{border-color:var(--primary);color:var(--primary)}
+.cpl{font-family:Archivo,sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--text-3);margin-bottom:6px;display:block}
+
+.note{border-left:3px solid var(--orange);background:var(--surface);border-radius:0 8px 8px 0;
+  padding:12px 15px;margin:12px 0;font-size:14px;color:var(--text-2)}
+.note b{color:var(--text)}
+.tip{border-left-color:var(--green)}
+.foot{border-top:1px solid var(--line);margin-top:48px;padding-block:28px;color:var(--text-3);
+  font-size:13px;background:var(--surface)}
+@media(max-width:560px){
+  .sh .tm{display:none}
+  .set .r{flex-direction:column;gap:3px}
+  .set .r .k{flex:none}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="top"><div class="w">
+  <div class="eb">Internal Audit Excellence</div>
+  <h1>Building the new home page</h1>
+  <p>Eighteen steps, in build order. Every part named here is in your Toolbox. Tick as you go — your progress is saved in this browser.</p>
+</div></div>
+
+<div class="bar"><div class="w">
+  <div class="pg">
+    <div class="pgt"><span>Progress</span><span><b id="pn">0</b> of <b id="pt">18</b></span></div>
+    <div class="pgb"><i id="pb" style="width:0%"></i></div>
+  </div>
+  <button class="rst" id="rst">Reset</button>
+</div></div>
+
+<div class="w" id="steps"></div>
+
+<div class="foot"><div class="w">
+  Build order matters: sections first, then the parts inside them. SharePoint will not let you move a web part
+  between columns cleanly once a section is full.
+</div></div>
+
+<script>
+const PHASES=[
+{n:"Phase 0",h:"Before you add anything",p:"Twenty minutes of setup that decides how everything else looks.",steps:[
+ {t:"Apply the site theme",wp:"Change the look",tm:"5 min",b:`
+  <p>Every colour in the design comes from here. Editorial card and Banner offer <strong>theme</strong> colours, not free hex values — so if you skip this, your cards will be default blue and nothing else will match.</p>
+  <ol class="cl">
+   <li>Gear icon <span class="key">⚙</span> → <strong>Change the look</strong> → <strong>Theme</strong></li>
+   <li>If your admin has loaded a company theme, pick it and stop here.</li>
+   <li>If not, choose <strong>Blue</strong> and select <strong>Customize</strong> to push the primary as close to your blue as the picker allows.</li>
+  </ol>
+  <div class="note"><b>To get exact brand colour</b> your admin runs one PowerShell command with the theme JSON, or adds it in Brand Center. Ask them — it takes them two minutes and it is the difference between "close to brand" and "on brand". Everything below works either way.</div>`},
+
+ {t:"Make the six Quick Links icons",wp:"preparation",tm:"1–2 hrs",b:`
+  <p>The single biggest visual upgrade available to you. Stock Fluent icons are what make an intranet look like everyone else's.</p>
+  <ul class="cl">
+   <li>Six 40×40 PNGs, transparent background, one visual style across all six.</li>
+   <li>TeamMate+, Audit Manual, Templates, Analytics, CxO Reporting, Leave Plan.</li>
+   <li>Upload them to <span class="key">Site Assets</span> so they have stable URLs.</li>
+  </ul>
+  <div class="note tip"><b>Shortcut:</b> if design help is not available, use the same navy square with two or three mono letters on each — TM+, MAN, TPL. Consistency beats decoration, and it takes an hour in PowerPoint.</div>`},
+
+ {t:"Open the page and clear the decks",wp:"page editing",tm:"10 min",b:`
+  <ol class="cl">
+   <li>Go to the home page → <strong>Edit</strong> (top right).</li>
+   <li>Screenshot the current page first. You will want to compare, and someone will ask what changed.</li>
+   <li>Delete web parts you are replacing. Keep the ones you will reuse — Events and News keep their connected data.</li>
+   <li><strong>Save as draft</strong>, not Publish. Nothing goes live until step 18.</li>
+  </ol>
+  <div class="note"><b>Your site is a team site, not a communication site.</b> That means <strong>Full-width section</strong> is not offered in the layout picker. Everything below uses normal sections, which is why the design sits inside the 1204px content width rather than running edge to edge.</div>`}
+]},
+
+{n:"Phase 1",h:"Build the page, top to bottom",p:"For each step: add the section first, set its background, then drop the parts in.",steps:[
+ {t:"Hero band",wp:"Banner",tm:"20 min",b:`
+  <p>Add a <strong>one-column</strong> section at the top. Background: <strong>None</strong> — the Banner brings its own.</p>
+  <div class="set">
+   <div class="r"><span class="k">Layout</span><span class="v">Overlap</span></div>
+   <div class="r"><span class="k">Background</span><span class="v">A team photograph, or a flat navy image if you have none</span></div>
+   <div class="r"><span class="k">Overlay</span><span class="v">Dark, opacity around 70% — the headline must stay readable</span></div>
+   <div class="r"><span class="k">Buttons</span><span class="v">Two: TeamMate+ and the Audit Manual</span></div>
+  </div>
+  <div class="cp"><span class="cpl">Headline</span><div class="bx">Everything an audit needs, one click from here.</div><button data-c>Copy</button></div>
+  <div class="cp"><span class="cpl">Message</span><div class="bx">Methodology, templates, TeamMate+ and live issue status — owned and kept current by named people.</div><button data-c>Copy</button></div>
+  <div class="note"><b>Avoid a busy photograph.</b> A group shot with faces behind text reads as clutter. A flat navy field or a heavily blurred image works better than a literal picture of the team.</div>`},
+
+ {t:"“Go to” — the six systems",wp:"Quick links",tm:"25 min",b:`
+  <p>Add a <strong>one-column</strong> section. Background: <strong>Neutral</strong>.</p>
+  <div class="set">
+   <div class="r"><span class="k">Layout</span><span class="v">Tiles</span></div>
+   <div class="r"><span class="k">Icons</span><span class="v">Your six PNGs from step 2, not the built-in icon picker</span></div>
+   <div class="r"><span class="k">Title</span><span class="v">Go to</span></div>
+  </div>
+  <p>Add the six links in this order. Order is the design — the most-used thing goes first:</p>
+  <div class="cp"><span class="cpl">Link titles, in order</span><div class="bx m">TeamMate+
+Audit Manual
+Templates
+Analytics
+CxO Reporting
+Leave Plan</div><button data-c>Copy</button></div>
+  <div class="note"><b>Test every link signed in as someone else.</b> Links that work for you because you are an owner are the most common reason people stop trusting an intranet page.</div>`},
+
+ {t:"“Start here” — three audiences",wp:"Editorial card × 3",tm:"40 min",b:`
+  <p>Add a <strong>three-column</strong> section. Background: <strong>None</strong>. Put one Editorial card in each column.</p>
+  <div class="set">
+   <div class="r"><span class="k">Layout (all three)</span><span class="v">Color block</span></div>
+   <div class="r"><span class="k">Colour</span><span class="v">Card 1 and 3 darkest available; card 2 your primary blue</span></div>
+   <div class="r"><span class="k">Alignment</span><span class="v">Top left</span></div>
+   <div class="r"><span class="k">Icon</span><span class="v">On</span></div>
+   <div class="r"><span class="k">Call to action</span><span class="v">On — one button each</span></div>
+  </div>
+  <div class="cp"><span class="cpl">Card 1 — New to the team</span><div class="bx m">Title:   New to the team
+Text:    Access, methodology and the people who unblock you — laid out for your first 30 days.
+Button:  Start onboarding</div><button data-c>Copy</button></div>
+  <div class="cp"><span class="cpl">Card 2 — Running an engagement</span><div class="bx m">Title:   Running an engagement
+Text:    Planning memo, RACM, sampling sheets, findings log, report shell and the QA checklist, in order.
+Button:  Open the toolkit</div><button data-c>Copy</button></div>
+  <div class="cp"><span class="cpl">Card 3 — Being audited</span><div class="bx m">Title:   Being audited
+Text:    For business partners outside Internal Audit. What to expect, what we ask for, how issues close.
+Button:  What to expect</div><button data-c>Copy</button></div>
+  <div class="note"><b>Card 3 does not exist yet.</b> The page it points at has to be written before you publish, or you ship a dead button. It is the highest-value page on the site — write it before step 18.</div>`},
+
+ {t:"Assurance dashboard",wp:"Power BI",tm:"varies",b:`
+  <p>Add a <strong>one-column</strong> section. Background: <strong>Neutral</strong>.</p>
+  <div class="set">
+   <div class="r"><span class="k">Report link</span><span class="v">Paste the report URL from Power BI Service</span></div>
+   <div class="r"><span class="k">Page name</span><span class="v">Pin ONE page, not the whole report</span></div>
+   <div class="r"><span class="k">Display</span><span class="v">Fit to width</span></div>
+   <div class="r"><span class="k">Nav pane / filter pane</span><span class="v">Both off — this is a summary, not a tool</span></div>
+  </div>
+  <div class="note"><b>Everyone who views the page needs a Power BI licence and access to the workspace.</b> Without it they see a sign-in prompt where the dashboard should be. Confirm this before it becomes the centrepiece of your home page.</div>`},
+
+ {t:"Create the right-hand rail",wp:"Vertical section",tm:"5 min",b:`
+  <p>Add a new section and choose <strong>Vertical section</strong> from the layout picker. It attaches to the right side and runs down the page from that point.</p>
+  <ul class="cl">
+   <li>Give it a <strong>different</strong> background tone from the sections beside it, or the join looks like a mistake.</li>
+   <li>Only lightweight parts belong here — it is narrow.</li>
+   <li>There can only be one per page.</li>
+  </ul>`},
+
+ {t:"Methodology, latest first",wp:"Highlighted content",tm:"30 min",b:`
+  <p>In the <strong>main column</strong> beside the rail.</p>
+  <div class="set">
+   <div class="r"><span class="k">Source</span><span class="v">IA Document Library</span></div>
+   <div class="r"><span class="k">Filter</span><span class="v">Content type = your methodology type — NOT a folder</span></div>
+   <div class="r"><span class="k">Sort</span><span class="v">Most recent</span></div>
+   <div class="r"><span class="k">Layout</span><span class="v">List</span></div>
+   <div class="r"><span class="k">Items</span><span class="v">5</span></div>
+  </div>
+  <div class="note tip"><b>This is the step that stops the page going stale.</b> Filter by content type and publishing a document makes it appear here on its own. Filter by folder and someone has to remember to edit this page — which they will not.</div>`},
+
+ {t:"Lifecycle index table",wp:"Markdown",tm:"20 min",b:`
+  <p>Below Highlighted content, same column. Paste this and replace the link targets:</p>
+  <div class="cp"><span class="cpl">Markdown — paste as is</span><div class="bx m">### Where each stage lives
+
+| Stage | Required papers | In TeamMate+ | Accountable |
+|---|---|---|---|
+| 1 · Plan | [Risk universe](#) · [Plan deck](#) | Risk Assessment | Head of IA |
+| 2 · Announce | [WP 1](#) · [WP 2 RACM](#) | Projects › Planning | Engagement Manager |
+| 3 · Fieldwork | [WP 3](#) · [Evidence index](#) | Workpapers | Engagement Lead |
+| 4 · Report | [WP 4](#) · [WP 5](#) · [QA checklist](#) | Issues → Report | Manager + QA |
+| 5 · Follow-up | [MAN 9](#) · [Follow-up sheet](#) | Issue Tracking | Issue owner |</div><button data-c>Copy</button></div>
+  <div class="note"><b>Markdown only — no HTML.</b> Any HTML tag you paste prints as visible text rather than rendering. Tables, headings, lists, bold and links all work. Nothing else does.</div>`},
+
+ {t:"Fill the rail",wp:"Countdown · Events · People · Agent link",tm:"35 min",b:`
+  <p>Four parts, stacked in the vertical section in this order:</p>
+  <div class="set">
+   <div class="r"><span class="k">Countdown timer</span><span class="v">Point at the Q3 follow-up cut-off</span></div>
+   <div class="r"><span class="k">Events</span><span class="v">Filter by category — keep birthdays out of this one</span></div>
+   <div class="r"><span class="k">People</span><span class="v">Three named owners, not a shared mailbox</span></div>
+   <div class="r"><span class="k">Agent link</span><span class="v">Only if you have Copilot — otherwise skip it</span></div>
+  </div>
+  <div class="note"><b>A countdown pointing at a date that has passed is worse than no countdown.</b> Before you add it, decide who moves it each quarter and write their name in the page description.</div>`},
+
+ {t:"“Being audited?” band",wp:"Call to action",tm:"15 min",b:`
+  <p>One-column section below the rail section. Background: <strong>Soft</strong>.</p>
+  <div class="cp"><span class="cpl">Text</span><div class="bx">Your department is being audited? What we will ask for, how long it takes, how findings get agreed, and what closes an issue — in plain language.</div><button data-c>Copy</button></div>
+  <div class="cp"><span class="cpl">Button</span><div class="bx">Read what to expect</div><button data-c>Copy</button></div>
+  <div class="note"><b>One button only.</b> Two halves the click-through on a band like this.</div>`},
+
+ {t:"Request form and What changed",wp:"Microsoft Forms + News",tm:"30 min",b:`
+  <p><strong>Two-column</strong> section. Background: <strong>None</strong>.</p>
+  <div class="set">
+   <div class="r"><span class="k">Left — Microsoft Forms</span><span class="v">Paste the Analytics &amp; Innovation form URL. Choose "Collect responses", not "Show results"</span></div>
+   <div class="r"><span class="k">Right — News</span><span class="v">Layout: List. Filter to a News category of "Methodology"</span></div>
+  </div>
+  <div class="note tip"><b>Embedding the form inline is a real win.</b> Today it is a link that loses people. Answering four fields without leaving the page is the difference between a request submitted and a request abandoned.</div>`},
+
+ {t:"People & culture",wp:"Image gallery",tm:"25 min",b:`
+  <p><strong>One-column</strong> section. Background: <strong>Neutral</strong>.</p>
+  <div class="set">
+   <div class="r"><span class="k">Layout</span><span class="v">Brick</span></div>
+   <div class="r"><span class="k">Images</span><span class="v">Four, all cropped to the same ratio before upload</span></div>
+   <div class="r"><span class="k">Captions</span><span class="v">On</span></div>
+  </div>
+  <div class="note"><b>Crop before you upload.</b> Mixed aspect ratios are the single clearest signal of a homemade intranet, and the gallery will not fix them for you.</div>`}
+]},
+
+{n:"Phase 2",h:"Finish and publish",p:"The steps people skip, which are the ones that decide whether it gets used.",steps:[
+ {t:"Mentorship and CPE",wp:"Editorial card × 2",tm:"20 min",b:`
+  <p><strong>Two-column</strong> section, one card each. Layout: <strong>Split</strong> — image on the left, text on the right.</p>
+  <div class="cp"><span class="cpl">Card 1</span><div class="bx m">Title:   Mentorship programme
+Text:    Match with a mentor against the skills catalogue. The tracker app is the interim tool while the full system is built.
+Button:  Explore skills catalogue</div><button data-c>Copy</button></div>
+  <div class="cp"><span class="cpl">Card 2</span><div class="bx m">Title:   Continuing Professional Education
+Text:    Log hours, browse sessions, track against the 40-hour annual requirement.
+Button:  Open the CPE programme</div><button data-c>Copy</button></div>`},
+
+ {t:"Fix the navigation",wp:"site navigation",tm:"15 min",b:`
+  <p>Your current navigation mirrors the library structure. Nobody thinks about their work in folders. Replace it with these seven:</p>
+  <div class="cp"><span class="cpl">Top navigation</span><div class="bx m">Home
+Methodology & Manuals
+TeamMate+
+Requests
+Learning & CPE
+Reports
+Team</div><button data-c>Copy</button></div>
+  <p>Edit via <strong>Edit</strong> beside the navigation bar. Add <strong>Site activity</strong> as the last web part on the page while you are here.</p>`},
+
+ {t:"Check before you publish",wp:"review",tm:"30 min",b:`
+  <ul class="cl">
+   <li>Open the page in a <strong>private window</strong>. Anything that fails for a normal member shows up here and nowhere else.</li>
+   <li>Ask one person outside Internal Audit to open it. Watch where they hesitate; do not explain.</li>
+   <li>Check it on a phone. The rail drops below the main column — make sure that order still reads.</li>
+   <li>Click every link and every button. All of them.</li>
+   <li>Confirm the "Being audited" page from step 6 actually exists.</li>
+  </ul>
+  <div class="note"><b>Name an owner per section and a review date</b> before publishing, not after. An intranet page dies from unowned stale content, never from imperfect design.</div>`},
+
+ {t:"Publish, then measure",wp:"Site usage",tm:"ongoing",b:`
+  <ol class="cl">
+   <li><strong>Publish</strong>, then post it in the team channel saying what moved and why — people need to be told once.</li>
+   <li>After a month: gear <span class="key">⚙</span> → <strong>Site usage</strong>. Look at which Quick Links actually get clicked.</li>
+   <li>Rewrite or drop the bottom two. Six links people use beats twelve they scroll past.</li>
+  </ol>
+  <div class="note tip"><b>This is also your migration groundwork.</b> The Engagements and Issues lists behind the dashboard are the first data model of the in-house platform you want later. Give them proper typed columns now — choice, date, person, a stable ID — and that move becomes an export rather than a re-keying exercise.</div>`}
+]}];
+
+const wrap=document.getElementById('steps');
+let idx=0; const ids=[];
+PHASES.forEach(ph=>{
+  const sec=document.createElement('div'); sec.className='ph';
+  sec.innerHTML='<div class="n">'+ph.n+'</div><h2>'+ph.h+'</h2><p>'+ph.p+'</p>';
+  wrap.appendChild(sec);
+  ph.steps.forEach(s=>{
+    idx++; const id='s'+idx; ids.push(id);
+    const d=document.createElement('div'); d.className='st'; d.id=id;
+    d.innerHTML=
+      '<label class="sh"><input type="checkbox" id="c'+id+'">'+
+      '<span class="num">'+String(idx).padStart(2,'0')+'</span>'+
+      '<span class="tt"><h3>'+s.t+'</h3><span class="wpn">'+s.wp+'</span></span>'+
+      '<span class="tm">'+s.tm+'</span></label>'+
+      '<div class="sb">'+s.b+'</div>';
+    wrap.appendChild(d);
+  });
+});
+document.getElementById('pt').textContent=ids.length;
+
+function save(){
+  try{ localStorage.setItem('iaBuild', JSON.stringify(
+    ids.filter(i=>document.getElementById('c'+i).checked))); }catch(e){}
+}
+function tally(){
+  const n=ids.filter(i=>document.getElementById('c'+i).checked).length;
+  document.getElementById('pn').textContent=n;
+  document.getElementById('pb').style.width=(n/ids.length*100)+'%';
+}
+ids.forEach(i=>{
+  const cb=document.getElementById('c'+i);
+  cb.addEventListener('change',()=>{
+    document.getElementById(i).classList.toggle('done',cb.checked);
+    tally(); save();
+  });
+});
+try{
+  const saved=JSON.parse(localStorage.getItem('iaBuild')||'[]');
+  saved.forEach(i=>{ const cb=document.getElementById('c'+i);
+    if(cb){ cb.checked=true; document.getElementById(i).classList.add('done'); } });
+}catch(e){}
+tally();
+
+document.getElementById('rst').addEventListener('click',()=>{
+  ids.forEach(i=>{ document.getElementById('c'+i).checked=false;
+    document.getElementById(i).classList.remove('done'); });
+  tally(); save();
+});
+
+document.querySelectorAll('[data-c]').forEach(b=>{
+  b.addEventListener('click',async e=>{
+    e.preventDefault();
+    const tx=b.previousElementSibling.textContent;
+    try{ await navigator.clipboard.writeText(tx); b.textContent='Copied';}
+    catch(err){
+      const r=document.createRange(); r.selectNodeContents(b.previousElementSibling);
+      const sel=getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      b.textContent='Select + copy';
+    }
+    setTimeout(()=>b.textContent='Copy',1800);
+  });
+});
+</script>
