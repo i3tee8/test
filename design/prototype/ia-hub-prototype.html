@@ -254,6 +254,53 @@ td a{color:var(--primary)}
   section{padding-block:30px}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---------- engage / gamification ---------- */
+.eng{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px}
+.qw{background:var(--navy);border-radius:4px;padding:26px;color:#fff;position:relative;overflow:hidden}
+.qw::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(135deg,transparent 0 14px,rgba(75,245,255,.05) 14px 28px)}
+.qw > *{position:relative;z-index:1}
+.qw .lb{display:block;font-family:Archivo,sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cyan)}
+.qw h3{font-size:19px;font-weight:700;margin:11px 0 5px;color:#fff;max-width:46ch;line-height:1.3}
+.qw .src{display:block;font-family:"IBM Plex Mono",monospace;font-size:11px;color:#8fa0d8}
+.opts{display:grid;gap:8px;margin:17px 0 0}
+.opt{border:1px solid #1c2470;border-radius:6px;padding:10px 13px;font-size:13.5px;color:#cdd8f5;
+  display:flex;align-items:center;gap:11px;background:rgba(255,255,255,.03)}
+.opt i{width:20px;height:20px;border-radius:4px;border:1px solid #2b3a8a;display:grid;place-items:center;
+  font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:#8fa0d8;flex:none}
+.opt.on{border-color:var(--cyan);background:rgba(75,245,255,.09);color:#fff}
+.opt.on i{border-color:var(--cyan);color:#000050;background:var(--cyan);font-weight:700}
+.qwf{display:flex;gap:20px;align-items:center;margin-top:18px;padding-top:15px;
+  border-top:1px solid #1c2470;flex-wrap:wrap}
+.stat{display:flex;align-items:baseline;gap:7px}
+.stat b{font-family:Archivo,sans-serif;font-size:22px;font-weight:700;color:var(--cyan);line-height:1}
+.stat span{font-size:11.5px;color:#8fa0d8}
+.lead{margin-left:auto;display:flex;gap:7px;align-items:center;font-size:11.5px;color:#8fa0d8;flex-wrap:wrap}
+.lead em{font-style:normal;background:rgba(255,255,255,.09);border-radius:20px;padding:3px 10px;
+  color:#cdd8f5;font-family:"IBM Plex Mono",monospace;font-size:11px}
+.engcol{display:grid;gap:16px;align-content:start}
+.atheer{background:linear-gradient(140deg,#1061FF,#000050);border-radius:4px;padding:21px;color:#fff}
+.atheer .lb{display:block;font-family:Archivo,sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--cyan)}
+.atheer h4{font-size:19px;font-weight:700;margin:9px 0 6px;font-family:Archivo,sans-serif;letter-spacing:.02em}
+.atheer p{margin:0;font-size:13px;color:rgba(255,255,255,.84);line-height:1.5}
+.ask2{margin-top:15px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);
+  border-radius:20px;padding:9px 15px;font-size:12.5px;color:rgba(255,255,255,.78);
+  display:flex;justify-content:space-between;align-items:center;gap:10px}
+.ask2 span{color:var(--cyan);font-weight:700;flex:none}
+.cpe2{background:var(--ground);border:1px solid var(--line);border-radius:4px;padding:21px;box-shadow:var(--shadow)}
+.cpe2 .lb{display:block;font-family:Archivo,sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--text-3)}
+.cpe2 .big{display:flex;align-items:baseline;gap:8px;margin:10px 0 11px}
+.cpe2 .big b{font-family:Archivo,sans-serif;font-size:31px;font-weight:700;line-height:1;color:var(--text)}
+.cpe2 .big span{font-size:13px;color:var(--text-2)}
+.badges{display:flex;gap:7px;margin-top:14px;flex-wrap:wrap}
+.bdg{font-family:Archivo,sans-serif;font-size:10.5px;font-weight:700;letter-spacing:.04em;border-radius:20px;
+  padding:4px 11px;border:1px solid var(--line);color:var(--text-3)}
+.bdg.won{background:var(--navy);color:var(--cyan);border-color:var(--navy)}
+@media(max-width:900px){.eng{grid-template-columns:minmax(0,1fr)}}
 </style>
 
 <div class="suite"><div class="w"><b>SharePoint</b><span>Internal Audit Excellence</span>
@@ -341,6 +388,53 @@ td a{color:var(--primary)}
   </div>
 </section>
 
+
+<!-- ENGAGE -->
+<section>
+  <div class="w">
+    <div class="sh">
+      <div><h2>Engage</h2><p>The reasons to come back on a day when you do not need a template. Participation is scored; audit outcomes are not.</p></div>
+      <a class="more" href="#">Leaderboard &amp; badges →</a>
+    </div>
+    <div class="eng">
+      <div class="qw">
+        <span class="lb">Question of the week · week 38</span>
+        <h3>Under the Global Internal Audit Standards, how often must an external quality assessment be performed?</h3>
+        <span class="src">Source: Audit Manual ch. 12 — QAIP</span>
+        <div class="opts">
+          <div class="opt"><i>A</i>Every two years</div>
+          <div class="opt"><i>B</i>Every three years</div>
+          <div class="opt on"><i>C</i>Every five years</div>
+          <div class="opt"><i>D</i>Only when the Audit Committee requests one</div>
+        </div>
+        <div class="qwf">
+          <div class="stat"><b>340</b><span>your points</span></div>
+          <div class="stat"><b>4</b><span>week streak</span></div>
+          <div class="stat"><b>12</b><span>of 68 answered</span></div>
+          <div class="lead">This week <em>1 · A. Q.</em><em>2 · M. S.</em><em>3 · you</em></div>
+        </div>
+      </div>
+      <div class="engcol">
+        <div class="atheer">
+          <span class="lb">AI assistant</span>
+          <h4>ATHEER</h4>
+          <p>Ask the manual a question in plain language. Every answer cites the chapter it came from, so you can check it.</p>
+          <div class="ask2">What evidence closes a high-rated issue?<span>Ask →</span></div>
+        </div>
+        <div class="cpe2">
+          <span class="lb">Your CPE · FY2026</span>
+          <div class="big"><b>26</b><span>of 40 hours</span></div>
+          <div class="track"><i style="width:65%;background:var(--primary)"></i></div>
+          <div class="badges">
+            <span class="bdg won">10 hrs ✓</span><span class="bdg won">25 hrs ✓</span>
+            <span class="bdg">40 hrs</span><span class="bdg">Mentor</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- 5 HIGHLIGHTED CONTENT + vertical section -->
 <section>
   <div class="w">
@@ -395,8 +489,8 @@ td a{color:var(--primary)}
           </div>
         </div>
         <div>
-          <div class="agent"><span class="lb">Ask Internal Audit</span>
-            <h4>Methodology assistant</h4>
+          <div class="agent"><span class="lb">Ask ATHEER</span>
+            <h4>ATHEER assistant</h4>
             <p>Grounded on the manual and templates library. Answers cite the chapter they came from.</p>
             <span class="go">Start a conversation →</span></div>
         </div>
