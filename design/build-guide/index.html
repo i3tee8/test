@@ -119,12 +119,12 @@ ol.cl li,ul.cl li{margin:6px 0}
 <div class="top"><div class="w">
   <div class="eb">Internal Audit Excellence</div>
   <h1>Building the new home page</h1>
-  <p>Eighteen steps, in build order. Every part named here is in your Toolbox. Tick as you go — your progress is saved in this browser.</p>
+  <p>Nineteen steps, in build order. Every part named here is in your Toolbox. Tick as you go — your progress is saved in this browser.</p>
 </div></div>
 
 <div class="bar"><div class="w">
   <div class="pg">
-    <div class="pgt"><span>Progress</span><span><b id="pn">0</b> of <b id="pt">18</b></span></div>
+    <div class="pgt"><span>Progress</span><span><b id="pn">0</b> of <b id="pt">19</b></span></div>
     <div class="pgb"><i id="pb" style="width:0%"></i></div>
   </div>
   <button class="rst" id="rst">Reset</button>
@@ -212,10 +212,10 @@ Button:  Start onboarding</div><button data-c>Copy</button></div>
   <div class="cp"><span class="cpl">Card 2 — Running an engagement</span><div class="bx m">Title:   Running an engagement
 Text:    Planning memo, RACM, sampling sheets, findings log, report shell and the QA checklist, in order.
 Button:  Open the toolkit</div><button data-c>Copy</button></div>
-  <div class="cp"><span class="cpl">Card 3 — Being audited</span><div class="bx m">Title:   Being audited
-Text:    For business partners outside Internal Audit. What to expect, what we ask for, how issues close.
-Button:  What to expect</div><button data-c>Copy</button></div>
-  <div class="note"><b>Card 3 does not exist yet.</b> The page it points at has to be written before you publish, or you ship a dead button. It is the highest-value page on the site — write it before step 18.</div>`},
+  <div class="cp"><span class="cpl">Card 3 — Requesting audit analytics</span><div class="bx m">Title:   Requesting audit analytics
+Text:    Data extraction, reporting and analytics support for your engagement. Service catalogue and turnaround times inside.
+Button:  Submit a request</div><button data-c>Copy</button></div>
+  <div class="note tip"><b>Point card 3 at the form further down this page</b>, not at an external link. Analytics appears three times — the Quick Links tile for people who already know, this card to explain what analytics can do, and the embedded Form to submit. Chained they work; competing they do not.</div>`},
 
  {t:"Assurance dashboard",wp:"Power BI",tm:"varies",b:`
   <p>Add a <strong>one-column</strong> section. Background: <strong>Neutral</strong>.</p>
@@ -226,6 +226,17 @@ Button:  What to expect</div><button data-c>Copy</button></div>
    <div class="r"><span class="k">Nav pane / filter pane</span><span class="v">Both off — this is a summary, not a tool</span></div>
   </div>
   <div class="note"><b>Everyone who views the page needs a Power BI licence and access to the workspace.</b> Without it they see a sign-in prompt where the dashboard should be. Confirm this before it becomes the centrepiece of your home page.</div>`},
+
+ {t:"Question of the week &amp; the Engage band",wp:"List + Microsoft Forms + Text",tm:"50 min",b:`
+  <p><strong>One-column</strong> section below the dashboard. Background: <strong>None</strong>. Three blocks side by side: the weekly question, ATHEER, and your CPE.</p>
+  <div class="set">
+   <div class="r"><span class="k">List — Questions</span><span class="v">Columns: Week number, Question, Options A–D, Correct answer, Manual reference</span></div>
+   <div class="r"><span class="k">List — Responses</span><span class="v">Columns: Person, Week, Answer, Points. The leaderboard is a formatted view of this, grouped by person</span></div>
+   <div class="r"><span class="k">Microsoft Forms</span><span class="v">Collects the weekly answer. Set it to one response per person</span></div>
+   <div class="r"><span class="k">CPE badges</span><span class="v">Calculated column on the CPE list — 10, 25 and 40 hours. Format the view to draw them as chips</span></div>
+  </div>
+  <div class="note"><b>Score participation, never audit outcomes.</b> Points for answering, logging CPE, mentoring and submitting ideas. Nothing for findings raised or issues closed — scoring those distorts the judgement the department exists to exercise, and an external QAIP assessor will ask.</div>
+  <div class="note"><b>Someone has to write a question every week.</b> Name them before this goes on the page. A stale question from three weeks ago does more damage than no question at all.</div>`},
 
  {t:"Create the right-hand rail",wp:"Vertical section",tm:"5 min",b:`
   <p>Add a new section and choose <strong>Vertical section</strong> from the layout picker. It attaches to the right side and runs down the page from that point.</p>
@@ -320,7 +331,7 @@ Team</div><button data-c>Copy</button></div>
    <li>Ask one person outside Internal Audit to open it. Watch where they hesitate; do not explain.</li>
    <li>Check it on a phone. The rail drops below the main column — make sure that order still reads.</li>
    <li>Click every link and every button. All of them.</li>
-   <li>Confirm the "Being audited" page from step 6 actually exists.</li>
+   <li>Confirm the analytics request form from step 6 actually receives a test submission.</li>
   </ul>
   <div class="note"><b>Name an owner per section and a review date</b> before publishing, not after. An intranet page dies from unowned stale content, never from imperfect design.</div>`},
 
